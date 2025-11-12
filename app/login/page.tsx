@@ -17,6 +17,7 @@ export default function Login() {
     const [otp, setOtp] = useState("");
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [exp, setExp] = useState(5);
     const router = useRouter();
 
     const sendOtpHandler = async () => {
@@ -28,12 +29,17 @@ export default function Login() {
                 body: JSON.stringify({ phone }),
             });
 
+            const data = await res.json();
+
             if (res.ok) {
-                toast.success("OTP send to your phone number");
+                toast.success(data.message || "OTP send to your phone number");
+                if (data.exp && typeof data.exp === "number") {
+                    setExp(data.exp);
+                }
+                setStep(2);
             } else {
-                toast.error("Try after sometime");
+                toast.error(data.error || "Try after sometime");
             }
-            setStep(2);
         } catch {
             toast.error("Something went wrong, try after sometime!");
         }
@@ -49,11 +55,14 @@ export default function Login() {
                 body: JSON.stringify({ phone, otp }),
             });
 
+            const data = await res.json();
+
             if (res.ok) {
                 router.push("/verification");
-                toast.success("Successfully verified!");
+                toast.success(data.message || "Successfully verified!");
             } else {
-                toast.error("Invalid OTP!");
+                setOtp("");
+                toast.error(data.error || "Invalid OTP!");
             }
         } catch {
             toast.error("Something went wrong, try after sometime!");
@@ -78,7 +87,10 @@ export default function Login() {
                             onChange={(e) => setPhone(e.target.value)}
                             className="w-full text-xs [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
-                        <Button onClick={sendOtpHandler}>
+                        <Button
+                            onClick={sendOtpHandler}
+                            disabled={loading || phone.length != 10}
+                        >
                             {loading ? <LoaderCircle /> : "Send OTP"}
                         </Button>
                     </>
@@ -89,6 +101,7 @@ export default function Login() {
                             pattern={REGEXP_ONLY_DIGITS}
                             value={otp}
                             onChange={(value) => setOtp(value)}
+                            disabled={loading}
                         >
                             <InputOTPGroup>
                                 <InputOTPSlot index={0} />
@@ -99,7 +112,10 @@ export default function Login() {
                                 <InputOTPSlot index={5} />
                             </InputOTPGroup>
                         </InputOTP>
-                        <Button onClick={verifyOtpHandler}>
+                        <Button
+                            onClick={verifyOtpHandler}
+                            disabled={loading || otp.length != 6}
+                        >
                             {loading ? <LoaderCircle /> : "Verify"}
                         </Button>
                     </>
