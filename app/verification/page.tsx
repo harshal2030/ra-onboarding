@@ -1,12 +1,5 @@
-import { verifyToken } from "@/lib/auth";
-import { cookies} from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
 
-export default async function Verification() {
-    const token = (await cookies()).get("token")?.value;
-    const decoded = token ? verifyToken(token) : null;
-
-    if (!decoded) redirect("/login");
-
+export default function Verification() {
     return <>verification</>
 }
