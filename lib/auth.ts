@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 const SECRET = process.env.JWT_SECRET || "supersecret";
 
 export function generateToken(phone: string) {
-    return jwt.sign({ phone }, SECRET, { expiresIn: "7d" });
+    return jwt.sign({ phone }, SECRET, { expiresIn: "1d" });
 }
 
 export function verifyToken(token: string) {
