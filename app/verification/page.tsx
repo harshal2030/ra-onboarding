@@ -3,6 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { useStepper } from "@/hooks/useStepper";
 import { LogOut } from "lucide-react";
+import { Disclaimer } from "./disclaimer";
+import { SelectUserType } from "./select-user-type";
+import { ClientBasicDetails } from "./client-basic-details";
+import { ClientProfile } from "./client-profile";
+import { KycEsign } from "./kyc-esign";
 
 enum Steps {
     DISCLAIMER = "Disclaimer",
@@ -21,6 +26,10 @@ const steps: Steps[] = [
 
 export default function Verification() {
     const { currentStep, currentIndex, nextStep } = useStepper(steps);
+
+    const handleVerify = () => {
+        nextStep();
+    };
 
     return (
         <div className="h-screen flex flex-col bg-gray-50">
@@ -44,11 +53,17 @@ export default function Verification() {
                 <div className="flex flex-col flex-1">
                     {/* Scrollable Content */}
                     <div className="flex-1 overflow-y-auto p-4">
-                        <div className="space-y-4">
-                            <div className="p-4 bg-gray-100 rounded">
-                                {currentStep}
-                            </div>
-                        </div>
+                        {currentStep === Steps.DISCLAIMER && <Disclaimer />}
+                        {currentStep === Steps.SELECT_USER_TYPE && (
+                            <SelectUserType />
+                        )}
+                        {currentStep === Steps.CLIENT_BASIC_DETAILS && (
+                            <ClientBasicDetails />
+                        )}
+                        {currentStep === Steps.CLIENT_PROFILE && (
+                            <ClientProfile />
+                        )}
+                        {currentStep === Steps.KYC_ESIGN && <KycEsign />}
                     </div>
 
                     {/* Static Bottom Bar */}
@@ -59,9 +74,9 @@ export default function Verification() {
                             </span>
                             <Button
                                 className="px-6 py-1 rounded cursor-pointer"
-                                onClick={nextStep}
+                                onClick={() => handleVerify()}
                             >
-                                Next
+                                Verify
                             </Button>
                         </div>
                     </div>

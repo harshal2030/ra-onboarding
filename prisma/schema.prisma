@@ -12,9 +12,26 @@ datasource db {
 }
 
 model User {
-    id        Int @id @default(autoincrement())
-    phone     String @unique
-    otp       String?
-    otpExpire DateTime?
-    createdAt DateTime @default(now())
+    id            Int @id @default(autoincrement())
+    phone         String @unique
+    otp           String?
+    otpExpire     DateTime?
+    currentStep   Int @default(0)
+    firstName     String?
+    lastName      String?
+    email         String?
+    passwordHash  String?
+    type          UserType?
+    pan_no        String?
+    completed     Boolean @default(false)
+    createdAt     DateTime @default(now())
+}
+
+enum UserType {
+    INDIVIDUAL
+    HUF
+    LLP
+    PARTNERSHIP_FIRM
+    CORPORATE
+    TRUST
 }
