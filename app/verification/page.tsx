@@ -27,10 +27,6 @@ const steps: Steps[] = [
 export default function Verification() {
     const { currentStep, currentIndex, nextStep } = useStepper(steps);
 
-    const handleVerify = () => {
-        nextStep();
-    };
-
     return (
         <div className="h-screen flex flex-col bg-gray-50">
             {/* Header */}
@@ -50,37 +46,13 @@ export default function Verification() {
             {/* Main content */}
             <main className="flex flex-1 h-screen overflow-hidden">
                 {/* Main Content + Bottom Bar */}
-                <div className="flex flex-col flex-1">
-                    {/* Scrollable Content */}
-                    <div className="flex-1 overflow-y-auto p-4">
-                        {currentStep === Steps.DISCLAIMER && <Disclaimer />}
-                        {currentStep === Steps.SELECT_USER_TYPE && (
-                            <SelectUserType />
-                        )}
-                        {currentStep === Steps.CLIENT_BASIC_DETAILS && (
-                            <ClientBasicDetails />
-                        )}
-                        {currentStep === Steps.CLIENT_PROFILE && (
-                            <ClientProfile />
-                        )}
-                        {currentStep === Steps.KYC_ESIGN && <KycEsign />}
-                    </div>
-
-                    {/* Static Bottom Bar */}
-                    <div className="border-t p-4 bg-white sticky bottom-0">
-                        <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-500">
-                                © IndoThai
-                            </span>
-                            <Button
-                                className="px-6 py-1 rounded cursor-pointer"
-                                onClick={() => handleVerify()}
-                            >
-                                Verify
-                            </Button>
-                        </div>
-                    </div>
-                </div>
+                {currentStep === Steps.DISCLAIMER && <Disclaimer onComplete={() => nextStep()} />}
+                {currentStep === Steps.SELECT_USER_TYPE && <SelectUserType />}
+                {currentStep === Steps.CLIENT_BASIC_DETAILS && (
+                    <ClientBasicDetails />
+                )}
+                {currentStep === Steps.CLIENT_PROFILE && <ClientProfile />}
+                {currentStep === Steps.KYC_ESIGN && <KycEsign />}
 
                 {/* Sidebar */}
                 <div className="w-[220px] border-l flex flex-col py-5 px-4 gap-2 bg-gray-50 shadow-inner">

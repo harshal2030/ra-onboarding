@@ -1,16 +1,23 @@
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { SignJWT, jwtVerify } from "jose";
 
-const SECRET = process.env.JWT_SECRET || "supersecret";
+const SECRET = new TextEncoder().encode(
+    process.env.JWT_SECRET || "supersecret",
+);
 
-export function generateToken(phone: string) {
-    return jwt.sign({ phone }, SECRET, { expiresIn: "1d" });
+export async function generateToken(phone: string) {
+    return await new SignJWT({ phone })
+        .setProtectedHeader({ alg: "HS256" })
+        .setExpirationTime("1d")
+        .sign(SECRET);
 }
 
-export function verifyToken(token: string) {
+export async function verifyToken(token: string) {
     try {
-        return jwt.verify(token, SECRET);
-    } catch {
+        const { payload } = await jwtVerify(token, SECRET);
+        return payload;
+    } catch (e: any) {
+        console.error("Token verification error:", e.message);
         return null;
     }
 }
