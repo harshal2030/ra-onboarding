@@ -2,13 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { useStepper } from "@/hooks/useStepper";
-import { LogOut } from "lucide-react";
+import { LoaderCircle, LogOut } from "lucide-react";
 import { Disclaimer } from "./disclaimer";
 import { SelectUserType } from "./select-user-type";
 import { ClientBasicDetails } from "./client-basic-details";
 import { ClientProfile } from "./client-profile";
 import { KycEsign } from "./kyc-esign";
 import { Step } from "@/types/steps";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const steps: Step[] = [
     Step.DISCLAIMER,
@@ -19,7 +21,48 @@ const steps: Step[] = [
 ];
 
 export default function Verification() {
-    const { currentStep, currentIndex, nextStep } = useStepper(steps);
+    const { currentStep, currentIndex, nextStep, goToStep } = useStepper(steps);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        let active = true;
+
+        (async () => {
+            setLoading(true);
+
+            try {
+                const res = await fetch("/api/user/me", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (active && data.data)
+                        goToStep(data.data.currentStep ?? 0);
+                }
+            } catch (error) {
+                alert(JSON.stringify(error));
+                toast.error("Something went wrong, try after sometime!");
+            } finally {
+                if (active) setLoading(false);
+            }
+        })();
+
+        return () => {
+            active = false;
+        };
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="h-screen flex justify-center items-center bg-gray-50">
+                <LoaderCircle className="animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="h-screen flex flex-col bg-gray-50">
