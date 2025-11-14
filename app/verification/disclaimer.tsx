@@ -118,13 +118,17 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
                                     <div>Are you sure you want to agree?</div>
                                     <DialogFooter>
                                         <DialogClose asChild>
-                                            <Button variant="outline">
+                                            <Button
+                                                disabled={loading}
+                                                variant="outline"
+                                            >
                                                 No
                                             </Button>
                                         </DialogClose>
                                         <DialogClose asChild>
                                             <Button
                                                 type="submit"
+                                                disabled={loading}
                                                 onClick={agreeHandler}
                                             >
                                                 Yes

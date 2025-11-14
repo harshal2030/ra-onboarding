@@ -119,7 +119,9 @@ export default function Verification() {
                 {currentStep === Step.DISCLAIMER && (
                     <Disclaimer onComplete={() => nextStep()} />
                 )}
-                {currentStep === Step.SELECT_USER_TYPE && <SelectUserType />}
+                {currentStep === Step.SELECT_USER_TYPE && (
+                    <SelectUserType onComplete={() => nextStep()} />
+                )}
                 {currentStep === Step.CLIENT_BASIC_DETAILS && (
                     <ClientBasicDetails />
                 )}
