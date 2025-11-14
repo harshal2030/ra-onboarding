@@ -16,7 +16,7 @@ model User {
     phone         String @unique
     otp           String?
     otpExpire     DateTime?
-    currentStep   Int @default(0)
+    currentStep   Int @default(1)
     firstName     String?
     lastName      String?
     email         String?

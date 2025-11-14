@@ -3,14 +3,49 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
-    DialogDescription,
     DialogFooter,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { Step } from "@/types/steps";
+import { LoaderCircle } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
+    const [loading, setLoading] = useState(false);
+
+    const agreeHandler = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch("/api/user/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    step: Step.DISCLAIMER,
+                    data: {
+                        agree: true,
+                        current_step: 1,
+                    },
+                }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                onComplete();
+            }
+
+            alert(JSON.stringify(data));
+        } catch (error) {
+            alert(JSON.stringify(error));
+            toast.error("Something went wrong, try after sometime!");
+        }
+        setLoading(false);
+    };
+
     return (
         <>
             {/* Main Content + Bottom Bar */}
@@ -71,8 +106,15 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
                         <Dialog>
                             <form>
                                 <DialogTrigger asChild>
-                                    <Button className="px-6 py-1 rounded cursor-pointer">
-                                        I Agree
+                                    <Button
+                                        className="px-6 py-1 rounded cursor-pointer"
+                                        disabled={loading}
+                                    >
+                                        {loading ? (
+                                            <LoaderCircle className="animate-spin" />
+                                        ) : (
+                                            "I Agree"
+                                        )}
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-[425px]">
@@ -84,12 +126,14 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
                                                 No
                                             </Button>
                                         </DialogClose>
-                                        <Button
-                                            type="submit"
-                                            onClick={() => onComplete()}
-                                        >
-                                            Yes
-                                        </Button>
+                                        <DialogClose asChild>
+                                            <Button
+                                                type="submit"
+                                                onClick={agreeHandler}
+                                            >
+                                                Yes
+                                            </Button>
+                                        </DialogClose>
                                     </DialogFooter>
                                 </DialogContent>
                             </form>

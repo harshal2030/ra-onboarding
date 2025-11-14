@@ -8,20 +8,14 @@ import { SelectUserType } from "./select-user-type";
 import { ClientBasicDetails } from "./client-basic-details";
 import { ClientProfile } from "./client-profile";
 import { KycEsign } from "./kyc-esign";
+import { Step } from "@/types/steps";
 
-enum Steps {
-    DISCLAIMER = "Disclaimer",
-    SELECT_USER_TYPE = "Select User Type",
-    CLIENT_BASIC_DETAILS = "Client Basic Details",
-    CLIENT_PROFILE = "Client Profile",
-    KYC_ESIGN = "Kyc E-Sign",
-}
-const steps: Steps[] = [
-    Steps.DISCLAIMER,
-    Steps.SELECT_USER_TYPE,
-    Steps.CLIENT_BASIC_DETAILS,
-    Steps.CLIENT_PROFILE,
-    Steps.KYC_ESIGN,
+const steps: Step[] = [
+    Step.DISCLAIMER,
+    Step.SELECT_USER_TYPE,
+    Step.CLIENT_BASIC_DETAILS,
+    Step.CLIENT_PROFILE,
+    Step.KYC_ESIGN,
 ];
 
 export default function Verification() {
@@ -46,13 +40,15 @@ export default function Verification() {
             {/* Main content */}
             <main className="flex flex-1 h-screen overflow-hidden">
                 {/* Main Content + Bottom Bar */}
-                {currentStep === Steps.DISCLAIMER && <Disclaimer onComplete={() => nextStep()} />}
-                {currentStep === Steps.SELECT_USER_TYPE && <SelectUserType />}
-                {currentStep === Steps.CLIENT_BASIC_DETAILS && (
+                {currentStep === Step.DISCLAIMER && (
+                    <Disclaimer onComplete={() => nextStep()} />
+                )}
+                {currentStep === Step.SELECT_USER_TYPE && <SelectUserType />}
+                {currentStep === Step.CLIENT_BASIC_DETAILS && (
                     <ClientBasicDetails />
                 )}
-                {currentStep === Steps.CLIENT_PROFILE && <ClientProfile />}
-                {currentStep === Steps.KYC_ESIGN && <KycEsign />}
+                {currentStep === Step.CLIENT_PROFILE && <ClientProfile />}
+                {currentStep === Step.KYC_ESIGN && <KycEsign />}
 
                 {/* Sidebar */}
                 <div className="w-[220px] border-l flex flex-col py-5 px-4 gap-2 bg-gray-50 shadow-inner">
