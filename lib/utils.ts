@@ -9,5 +9,5 @@ export function generatePhoneOtpVerifyMessage(
     otp: string,
     otpExpireMin: number,
 ): string {
-    return `Your OTP is ${otp}. Use this to verify your mobile number for IndoThai RA Services Onboarding. Valid for ${otpExpireMin} minutes.`;
+    return `Your OTP is ${otp}. Use this to verify your mobile number for IndoThai RA Services Onboarding. Valid for ${otpExpireMin} minuts Regards IndoThai`;
 }

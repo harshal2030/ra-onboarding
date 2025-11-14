@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { generatePhoneOtpVerifyMessage } from "@/lib/utils";
+import { sendSMS } from "@/lib/sms";
 
 const otpExpireMin = process.env.OTP_EXPIRE_MIN || 5;
 
@@ -20,8 +21,22 @@ export async function POST(req: Request) {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const message = generatePhoneOtpVerifyMessage(otp, otpExpireMin);
 
-        // TODO: Send message on phone
-        console.log(`${phone}: ${message}`);
+        if (process.env.ENV === "prod") {
+            const res = await sendSMS(`+91${phone}`, message);
+            const data = await res.json();
+            console.log("sendSMS API Response:", data);
+            if (!res.ok) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: "Failed to send OTP, please try again later",
+                    },
+                    { status: 500 },
+                );
+            }
+        } else {
+            console.log(`${phone}: ${message}`);
+        }
 
         await prisma.user.upsert({
             where: { phone },
