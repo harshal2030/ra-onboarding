@@ -32,15 +32,11 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
                 }),
             });
 
-            const data = await res.json();
-
             if (res.ok) {
                 onComplete();
             }
-
-            alert(JSON.stringify(data));
         } catch (error) {
-            alert(JSON.stringify(error));
+            if (process.env.ENV === "dev") alert(JSON.stringify(error));
             toast.error("Something went wrong, try after sometime!");
         }
         setLoading(false);

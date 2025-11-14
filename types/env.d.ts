@@ -3,5 +3,6 @@ declare namespace NodeJS {
         DATABASE_URL?: string;
         JWT_SECRET?: string;
         OTP_EXPIRE_MIN?: number;
+        ENV?: string;
     }
 }

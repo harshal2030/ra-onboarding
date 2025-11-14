@@ -41,10 +41,15 @@ export default function Verification() {
                 if (res.ok) {
                     const data = await res.json();
                     if (active && data.data)
-                        goToStep(data.data.currentStep ?? 0);
+                        goToStep(
+                            data.data.currentStep &&
+                                typeof data.data.currentStep === "number"
+                                ? data.data.currentStep - 1
+                                : 0,
+                        );
                 }
             } catch (error) {
-                alert(JSON.stringify(error));
+                if (process.env.ENV === "dev") alert(JSON.stringify(error));
                 toast.error("Something went wrong, try after sometime!");
             } finally {
                 if (active) setLoading(false);
@@ -55,6 +60,34 @@ export default function Verification() {
             active = false;
         };
     }, []);
+
+    const editPreviousStep = async (index: number) => {
+        setLoading(true);
+        try {
+            const res = await fetch("/api/user/me", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ currentStep: index + 1 }),
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.data)
+                    goToStep(
+                        data.data.currentStep &&
+                            typeof data.data.currentStep === "number"
+                            ? data.data.currentStep - 1
+                            : 0,
+                    );
+            }
+        } catch (error) {
+            if (process.env.ENV === "dev") alert(JSON.stringify(error));
+            toast.error("Something went wrong, try after sometime!");
+        }
+        setLoading(false);
+    };
 
     if (loading) {
         return (
@@ -117,6 +150,7 @@ export default function Verification() {
                                 </div>
 
                                 <button
+                                    onClick={() => editPreviousStep(i)}
                                     className={`hidden cursor-pointer ${i < currentIndex ? "group-hover:block" : ""} absolute right-2 text-[10px] bg-green-500 text-white px-2 py-0.5 rounded-md transition-opacity duration-200`}
                                 >
                                     Edit
