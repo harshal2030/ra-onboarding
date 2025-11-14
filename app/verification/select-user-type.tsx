@@ -46,6 +46,7 @@ export const SelectUserType = ({ onComplete }: { onComplete: () => void }) => {
             });
 
             if (res.ok) {
+                toast.success("User type updated successfully!");
                 onComplete();
             }
         } catch (error) {

@@ -18,6 +18,7 @@ model User {
     otpExpire     DateTime?
     currentStep   Int @default(1)
     firstName     String?
+    middleName    String?
     lastName      String?
     email         String?
     passwordHash  String?

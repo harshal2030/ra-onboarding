@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import { UserType } from "@/lib/generated/prisma/enums";
 import { Step } from "@/types/steps";
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import { z } from "zod";
 
 const userVerifyStepSchema = z.discriminatedUnion("step", [
@@ -17,6 +18,17 @@ const userVerifyStepSchema = z.discriminatedUnion("step", [
         data: z.object({
             user_type: z.string(),
             pan_no: z.string(),
+            current_step: z.number(),
+        }),
+    }),
+    z.object({
+        step: z.literal(Step.CLIENT_BASIC_DETAILS),
+        data: z.object({
+            first_name: z.string(),
+            middle_name: z.string().optional(),
+            last_name: z.string(),
+            email: z.email(),
+            password: z.string(),
             current_step: z.number(),
         }),
     }),
@@ -77,6 +89,28 @@ export async function POST(req: Request) {
                         data: {
                             type,
                             pan_no: data.data.pan_no,
+                            currentStep: data.data.current_step + 1,
+                        },
+                    });
+                }
+            case Step.CLIENT_BASIC_DETAILS:
+                if (data.step === Step.CLIENT_BASIC_DETAILS) {
+                    const hashedPassword = await bcrypt.hash(
+                        data.data.password,
+                        10,
+                    );
+
+                    await prisma.user.update({
+                        where: {
+                            phone: user || "",
+                            currentStep: data.data.current_step,
+                        },
+                        data: {
+                            firstName: data.data.first_name,
+                            middleName: data.data.middle_name ?? null,
+                            lastName: data.data.last_name,
+                            email: data.data.email,
+                            passwordHash: hashedPassword,
                             currentStep: data.data.current_step + 1,
                         },
                     });

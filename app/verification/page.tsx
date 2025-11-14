@@ -123,7 +123,7 @@ export default function Verification() {
                     <SelectUserType onComplete={() => nextStep()} />
                 )}
                 {currentStep === Step.CLIENT_BASIC_DETAILS && (
-                    <ClientBasicDetails />
+                    <ClientBasicDetails onComplete={() => nextStep()} />
                 )}
                 {currentStep === Step.CLIENT_PROFILE && <ClientProfile />}
                 {currentStep === Step.KYC_ESIGN && <KycEsign />}
