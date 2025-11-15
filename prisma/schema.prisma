@@ -12,20 +12,31 @@ datasource db {
 }
 
 model User {
-    id            Int @id @default(autoincrement())
-    phone         String @unique
-    otp           String?
-    otpExpire     DateTime?
-    currentStep   Int @default(1)
-    firstName     String?
-    middleName    String?
-    lastName      String?
-    email         String?
-    passwordHash  String?
-    type          UserType?
-    pan_no        String?
-    completed     Boolean @default(false)
-    createdAt     DateTime @default(now())
+    id                        Int @id @default(autoincrement())
+    phone                     String @unique
+    otp                       String?
+    otpExpire                 DateTime?
+    currentStep               Int @default(1)
+    firstName                 String?
+    middleName                String?
+    lastName                  String?
+    email                     String?
+    passwordHash              String?
+    type                      UserType?
+    pan_no                    String?
+    dateOfBirth               DateTime?
+    nameOfFatherOrSpouse      String?
+    sourceOfIncome            SourceOfIncome?
+    nationality               String?
+    countryOfTax              String? @default("India")
+    city                      String?
+    address                   String?
+    politicalExpose           PoliticalExpose?
+    gender                    Gender?
+    residentialStatus         ResidentialStatus?
+    maritalStatus             MaritalStatus?
+    onboardingStatus          OnboardingStatus @default(PENDING)
+    createdAt                 DateTime @default(now())
 }
 
 enum UserType {
@@ -35,4 +46,39 @@ enum UserType {
     PARTNERSHIP_FIRM
     CORPORATE
     TRUST
+}
+
+enum SourceOfIncome {
+    SALARY
+    BUSINESS
+    OTHER
+}
+
+enum PoliticalExpose {
+    YES
+    NO
+    RELATED
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    OTHER
+}
+
+enum ResidentialStatus {
+    RESIDENTIAL_INDIVIDUAL
+    NON_RESIDENTIAL_INDIVIDUAL
+}
+
+enum MaritalStatus {
+    SINGLE
+    MARRIED
+    DIVORCED
+}
+
+enum OnboardingStatus {
+    PENDING
+    IN_PROGRESS
+    COMPLETED
 }

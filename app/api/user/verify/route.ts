@@ -1,5 +1,13 @@
 import { prisma } from "@/lib/db";
-import { UserType } from "@/lib/generated/prisma/enums";
+import {
+    Gender,
+    MaritalStatus,
+    OnboardingStatus,
+    PoliticalExpose,
+    ResidentialStatus,
+    SourceOfIncome,
+    UserType,
+} from "@/lib/generated/prisma/enums";
 import { Step } from "@/types/steps";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
@@ -32,6 +40,22 @@ const userVerifyStepSchema = z.discriminatedUnion("step", [
             current_step: z.number(),
         }),
     }),
+    z.object({
+        step: z.literal(Step.CLIENT_PROFILE),
+        data: z.object({
+            dob: z.date(),
+            name_of_father_or_spouse: z.string(),
+            source_of_income: z.enum(SourceOfIncome),
+            nationality: z.string(),
+            city: z.string(),
+            address: z.string(),
+            politically_expose: z.enum(PoliticalExpose),
+            gender: z.enum(Gender),
+            residential_status: z.enum(ResidentialStatus),
+            marital_status: z.enum(MaritalStatus),
+            current_step: z.number(),
+        }),
+    }),
 ]);
 
 export async function POST(req: Request) {
@@ -61,7 +85,10 @@ export async function POST(req: Request) {
                             phone: user || "",
                             currentStep: data.data.current_step,
                         },
-                        data: { currentStep: data.data.current_step + 1 },
+                        data: {
+                            currentStep: data.data.current_step + 1,
+                            onboardingStatus: OnboardingStatus.IN_PROGRESS,
+                        },
                     });
                 }
             case Step.SELECT_USER_TYPE:
@@ -90,6 +117,7 @@ export async function POST(req: Request) {
                             type,
                             pan_no: data.data.pan_no,
                             currentStep: data.data.current_step + 1,
+                            onboardingStatus: OnboardingStatus.IN_PROGRESS,
                         },
                     });
                 }
@@ -112,6 +140,31 @@ export async function POST(req: Request) {
                             email: data.data.email,
                             passwordHash: hashedPassword,
                             currentStep: data.data.current_step + 1,
+                            onboardingStatus: OnboardingStatus.IN_PROGRESS,
+                        },
+                    });
+                }
+            case Step.CLIENT_PROFILE:
+                if (data.step === Step.CLIENT_PROFILE) {
+                    await prisma.user.update({
+                        where: {
+                            phone: user || "",
+                        },
+                        data: {
+                            dateOfBirth: data.data.dob,
+                            nameOfFatherOrSpouse:
+                                data.data.name_of_father_or_spouse,
+                            sourceOfIncome: data.data.source_of_income,
+                            nationality: data.data.nationality,
+                            city: data.data.city,
+                            address: data.data.address,
+                            politicalExpose: data.data.politically_expose,
+                            gender: data.data.gender,
+                            residentialStatus: data.data.residential_status,
+                            maritalStatus: data.data.marital_status,
+
+                            currentStep: data.data.current_step + 1,
+                            onboardingStatus: OnboardingStatus.IN_PROGRESS,
                         },
                     });
                 }
