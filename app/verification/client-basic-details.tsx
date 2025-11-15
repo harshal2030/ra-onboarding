@@ -1,18 +1,8 @@
 import { VerifyDialog } from "@/components/custom/verify";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Step } from "@/types/steps";
-import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 

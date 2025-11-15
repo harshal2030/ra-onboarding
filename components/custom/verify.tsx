@@ -4,6 +4,7 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogTitle,
     DialogTrigger,
@@ -15,6 +16,10 @@ export const VerifyDialog = ({
     handleVerify,
     data,
     disabled,
+    verifyBtnText = "Verify and Next",
+    cancelBtnText = "Cancel",
+    mainBtnText = "Verify and Next",
+    description,
 }: {
     title: string;
     disabled: boolean;
@@ -24,6 +29,10 @@ export const VerifyDialog = ({
         label: string;
         value: string;
     }[];
+    verifyBtnText?: string;
+    cancelBtnText?: string;
+    mainBtnText?: string;
+    description?: string;
 }) => {
     return (
         <Dialog>
@@ -36,12 +45,15 @@ export const VerifyDialog = ({
                         {loading ? (
                             <LoaderCircle className="animate-spin" />
                         ) : (
-                            "Verify and Next"
+                            mainBtnText
                         )}
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogTitle>{title}</DialogTitle>
+                    {description ?? (
+                        <DialogDescription>{description}</DialogDescription>
+                    )}
                     <div className="space-y-4">
                         {data.map((item, index) => (
                             <div
@@ -60,7 +72,7 @@ export const VerifyDialog = ({
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button disabled={loading} variant="outline">
-                                Cancel
+                                {cancelBtnText}
                             </Button>
                         </DialogClose>
                         <DialogClose asChild>
@@ -69,7 +81,7 @@ export const VerifyDialog = ({
                                 disabled={loading}
                                 onClick={handleVerify}
                             >
-                                Verify
+                                {verifyBtnText}
                             </Button>
                         </DialogClose>
                     </DialogFooter>

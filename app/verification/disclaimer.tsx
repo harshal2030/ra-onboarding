@@ -1,3 +1,4 @@
+import { VerifyDialog } from "@/components/custom/verify";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -99,45 +100,17 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
                         <span className="text-sm text-gray-500">
                             © IndoThai
                         </span>
-                        <Dialog>
-                            <form>
-                                <DialogTrigger asChild>
-                                    <Button
-                                        className="px-6 py-1 rounded cursor-pointer"
-                                        disabled={loading}
-                                    >
-                                        {loading ? (
-                                            <LoaderCircle className="animate-spin" />
-                                        ) : (
-                                            "I Agree"
-                                        )}
-                                    </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[425px]">
-                                    <DialogTitle>Disclaimer</DialogTitle>
-                                    <div>Are you sure you want to agree?</div>
-                                    <DialogFooter>
-                                        <DialogClose asChild>
-                                            <Button
-                                                disabled={loading}
-                                                variant="outline"
-                                            >
-                                                No
-                                            </Button>
-                                        </DialogClose>
-                                        <DialogClose asChild>
-                                            <Button
-                                                type="submit"
-                                                disabled={loading}
-                                                onClick={agreeHandler}
-                                            >
-                                                Yes
-                                            </Button>
-                                        </DialogClose>
-                                    </DialogFooter>
-                                </DialogContent>
-                            </form>
-                        </Dialog>
+                        <VerifyDialog
+                            disabled={false}
+                            data={[]}
+                            handleVerify={agreeHandler}
+                            loading={loading}
+                            title="Disclaimer"
+                            description="Are you sure you want to agree?"
+                            mainBtnText="I Agree"
+                            verifyBtnText="Yes"
+                            cancelBtnText="No"
+                        />
                     </div>
                 </div>
             </div>
