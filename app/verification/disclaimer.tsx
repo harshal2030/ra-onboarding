@@ -48,9 +48,15 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
             {/* Main Content + Bottom Bar */}
             <div className="flex flex-col flex-1">
                 {/* Scrollable Content */}
-                <div className="flex-1 overflow-y-auto p-4">
-                    <p>Dear Investor,</p>
-                    <p>
+                <div className="flex-1 overflow-y-auto px-6 py-5 space-y-3.5 relative bg-gray-50">
+                    {/* Scroll indicator gradient at top */}
+                    <div className="sticky top-0 h-3 bg-gradient-to-b from-gray-50 via-gray-50 to-transparent -mt-5 -mx-6 pointer-events-none z-10" />
+
+                    <p className="text-sm font-medium text-gray-900 mb-2">
+                        Dear Investor,
+                    </p>
+
+                    <p className="text-xs text-gray-700 leading-relaxed">
                         Clients financial risk tolerance - attitudes, values,
                         motivations, preferences and experiences, is measured
                         with a risk profile. The risk profile questionnaire
@@ -61,37 +67,65 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
                         total score would suggest the appropriate risk profiling
                         and risk assessment and suitability of service for you.
                     </p>
-                    <p>
-                        Investment involves risk. The price of securities may go
-                        down as well as up, and under certain circumstances an
-                        investor may sustain a total or substantial loss of
-                        investment. Past performance is not necessarily
-                        indicative of the future or likely performance.
-                        Investors should read the relevant information document/
-                        statement of additional information and do their own
-                        further research before making any investment decisions.
-                        An Investor should make an appraisal of the risks
-                        involved in investing in these products and should
-                        consult their own independent and professional advisors,
-                        to ensure that any decision made is suitable with
-                        regards to their circumstances and financial position.
-                    </p>
-                    <p>
-                        Our advice: There are not any right or wrong answers,
-                        please follow your instincts and answer the questions.
-                        Please answer the following questions by selecting only
-                        one response to each question
-                    </p>
-                    <p>
-                        IMPORTANT: Before making any investment decisions, it is
-                        important to understand your attitude towards risk. This
-                        helps identify an appropriate mix of investments that
-                        you are comfortable with. The Finideas Investment
-                        Advisor Private Limited Risk Profiling Tool will help
-                        you understand your ability to bear risk and identify
-                        the asset classes to match your investment needs
-                    </p>
-                    <p>NOTE :- All fields are mandatory.</p>
+
+                    <div className="border-l-2 border-gray-400 pl-3 py-1">
+                        <p className="text-xs text-gray-700 leading-relaxed">
+                            <span className="font-medium text-gray-900">
+                                Investment involves risk.
+                            </span>{" "}
+                            The price of securities may go down as well as up,
+                            and under certain circumstances an investor may
+                            sustain a total or substantial loss of investment.
+                            Past performance is not necessarily indicative of
+                            the future or likely performance. Investors should
+                            read the relevant information document/ statement of
+                            additional information and do their own further
+                            research before making any investment decisions. An
+                            Investor should make an appraisal of the risks
+                            involved in investing in these products and should
+                            consult their own independent and professional
+                            advisors, to ensure that any decision made is
+                            suitable with regards to their circumstances and
+                            financial position.
+                        </p>
+                    </div>
+
+                    <div className="border-l-2 border-gray-400 pl-3 py-1">
+                        <p className="text-xs text-gray-700 leading-relaxed">
+                            <span className="font-medium text-gray-900">
+                                Our advice:
+                            </span>{" "}
+                            There are not any right or wrong answers, please
+                            follow your instincts and answer the questions.
+                            Please answer the following questions by selecting
+                            only one response to each question.
+                        </p>
+                    </div>
+
+                    <div className="border-l-2 border-gray-400 pl-3 py-1">
+                        <p className="text-xs text-gray-700 leading-relaxed">
+                            <span className="font-medium text-gray-900">
+                                IMPORTANT:
+                            </span>{" "}
+                            Before making any investment decisions, it is
+                            important to understand your attitude towards risk.
+                            This helps identify an appropriate mix of
+                            investments that you are comfortable with. The
+                            Finideas Investment Advisor Private Limited Risk
+                            Profiling Tool will help you understand your ability
+                            to bear risk and identify the asset classes to match
+                            your investment needs.
+                        </p>
+                    </div>
+
+                    <div className="bg-white border border-gray-300 px-3 py-2 rounded-sm">
+                        <p className="text-xs font-medium text-gray-900">
+                            NOTE: All fields are mandatory.
+                        </p>
+                    </div>
+
+                    {/* Scroll indicator gradient at bottom */}
+                    <div className="sticky bottom-0 h-4 bg-gradient-to-t from-gray-50 via-gray-50 to-transparent -mb-5 -mx-6 pointer-events-none" />
                 </div>
 
                 {/* Static Bottom Bar */}

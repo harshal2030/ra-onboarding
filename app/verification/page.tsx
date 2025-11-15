@@ -25,6 +25,7 @@ export default function Verification() {
     const { currentStep, currentIndex, nextStep, goToStep } = useStepper(steps);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<Partial<User | undefined>>(undefined);
+    const [loggingOut, setLoggingOut] = useState(false);
 
     useEffect(() => {
         let active = true;
@@ -90,6 +91,30 @@ export default function Verification() {
         setLoading(false);
     };
 
+    const handleLogout = async () => {
+        setLoggingOut(true);
+        try {
+            const res = await fetch("/api/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (res.ok) {
+                toast.success("Logged out successfully!");
+                window.location.href = "/login";
+            } else {
+                toast.error("Logout failed, please try again");
+            }
+        } catch (error) {
+            if (process.env.ENV === "dev") alert(JSON.stringify(error));
+            toast.error("Something went wrong, try after sometime!");
+        } finally {
+            setLoggingOut(false);
+        }
+    };
+
     if (loading && !user) {
         return (
             <div className="h-screen flex justify-center items-center bg-gray-50">
@@ -116,9 +141,15 @@ export default function Verification() {
                 <Button
                     variant="outline"
                     className="flex items-center gap-2 text-sm font-medium hover:bg-red-50 hover:text-red-600 transition-colors"
+                    onClick={handleLogout}
+                    disabled={loggingOut}
                 >
-                    <LogOut size={18} />
-                    <span>Logout</span>
+                    {loggingOut ? (
+                        <LoaderCircle size={18} className="animate-spin" />
+                    ) : (
+                        <LogOut size={18} />
+                    )}
+                    <span>{loggingOut ? "Logging out..." : "Logout"}</span>
                 </Button>
             </header>
 

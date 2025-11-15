@@ -30,3 +30,7 @@ export async function setAuthCookie(token: string) {
         maxAge: 7 * 24 * 60 * 60,
     });
 }
+
+export async function clearAuthCookie() {
+    (await cookies()).delete("token");
+}
