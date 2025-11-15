@@ -55,7 +55,6 @@ export const ClientBasicDetails = ({
                 onComplete();
             } else {
                 const data = await res.json();
-                alert(process.env.NEXT_PUBLIC_ENV);
                 if (process.env.NEXT_PUBLIC_ENV === "dev")
                     alert(JSON.stringify(data));
                 toast.error("Failed to update basic details!");

@@ -43,7 +43,7 @@ const userVerifyStepSchema = z.discriminatedUnion("step", [
     z.object({
         step: z.literal(Step.CLIENT_PROFILE),
         data: z.object({
-            dob: z.date(),
+            dob: z.coerce.date(),
             name_of_father_or_spouse: z.string(),
             source_of_income: z.enum(SourceOfIncome),
             nationality: z.string(),

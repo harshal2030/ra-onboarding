@@ -125,7 +125,9 @@ export default function Verification() {
                 {currentStep === Step.CLIENT_BASIC_DETAILS && (
                     <ClientBasicDetails onComplete={() => nextStep()} />
                 )}
-                {currentStep === Step.CLIENT_PROFILE && <ClientProfile />}
+                {currentStep === Step.CLIENT_PROFILE && (
+                    <ClientProfile onComplete={() => nextStep()} />
+                )}
                 {currentStep === Step.KYC_ESIGN && <KycEsign />}
 
                 {/* Sidebar */}
