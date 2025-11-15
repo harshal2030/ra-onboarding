@@ -11,6 +11,7 @@ import { KycEsign } from "./kyc-esign";
 import { Step } from "@/types/steps";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { User } from "@/lib/generated/prisma/browser";
 
 const steps: Step[] = [
     Step.DISCLAIMER,
@@ -22,14 +23,14 @@ const steps: Step[] = [
 
 export default function Verification() {
     const { currentStep, currentIndex, nextStep, goToStep } = useStepper(steps);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<Partial<User | undefined>>(undefined);
 
     useEffect(() => {
         let active = true;
 
         (async () => {
             setLoading(true);
-
             try {
                 const res = await fetch("/api/user/me", {
                     method: "GET",
@@ -40,13 +41,13 @@ export default function Verification() {
 
                 if (res.ok) {
                     const data = await res.json();
-                    if (active && data.data)
-                        goToStep(
-                            data.data.currentStep &&
-                                typeof data.data.currentStep === "number"
-                                ? data.data.currentStep - 1
-                                : 0,
-                        );
+                    if (active && data.data) setUser(data.data);
+                    goToStep(
+                        data.data.currentStep &&
+                            typeof data.data.currentStep === "number"
+                            ? data.data.currentStep - 1
+                            : 0,
+                    );
                 }
             } catch (error) {
                 if (process.env.ENV === "dev") alert(JSON.stringify(error));
@@ -89,10 +90,18 @@ export default function Verification() {
         setLoading(false);
     };
 
-    if (loading) {
+    if (loading && !user) {
         return (
             <div className="h-screen flex justify-center items-center bg-gray-50">
                 <LoaderCircle className="animate-spin" />
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="h-screen flex justify-center items-center bg-gray-50">
+                <span>Try after sometime, or contact support</span>
             </div>
         );
     }
@@ -140,7 +149,7 @@ export default function Verification() {
                         return (
                             <div
                                 key={i}
-                                className={`group relative flex flex-row items-center justify-between px-3 py-2 rounded-lg border border-gray-200 ${i <= currentIndex ? "bg-green-50 border-green-300" : "bg-white border-gray-200"} transition-all duration-200`}
+                                className={`group relative flex flex-row items-center justify-between px-3 py-2 rounded-lg border border-gray-200 ${i < currentIndex ? "bg-green-50 border-green-300" : "bg-white border-gray-200"} transition-all duration-200`}
                             >
                                 <div className="flex items-center gap-2">
                                     <span
