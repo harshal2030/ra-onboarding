@@ -46,6 +46,9 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
         Array<{ label: string; value: string }>
     >([]);
     const [nationalityLoading, setNationalityLoading] = useState(false);
+    const [citySearch, setCitySearch] = useState<string>("");
+    const [cityOptions, setCityOptions] = useState<string[]>([]);
+    const [cityLoading, setCityLoading] = useState(false);
     const [politicalExposure, setPoliticalExposure] = useState<
         PoliticalExpose | undefined
     >(PoliticalExpose.NO);
@@ -116,6 +119,33 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
 
         return () => clearTimeout(timer);
     }, [nationalitySearch]);
+
+    // Debounced search for cities
+    useEffect(() => {
+        if (!citySearch || citySearch.length < 2) {
+            setCityOptions([]);
+            return;
+        }
+
+        const timer = setTimeout(async () => {
+            setCityLoading(true);
+            try {
+                const res = await fetch(
+                    `/api/cities?keyword=${encodeURIComponent(citySearch)}`
+                );
+                const data = await res.json();
+                if (data.success) {
+                    setCityOptions(data.data);
+                }
+            } catch (error) {
+                console.error("Failed to search cities:", error);
+            } finally {
+                setCityLoading(false);
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [citySearch]);
 
     const handleVerify = async () => {
         setLoading(true);
@@ -328,7 +358,11 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
                                                     />
                                                 </div>
                                                 <div className="max-h-[200px] overflow-y-auto">
-                                                    {nationalityOptions.length > 0 ? (
+                                                    {nationalityLoading ? (
+                                                        <div className="px-2 py-6 text-center text-sm text-slate-500">
+                                                            Loading...
+                                                        </div>
+                                                    ) : nationalityOptions.length > 0 ? (
                                                         nationalityOptions.map((option) => (
                                                             <SelectItem
                                                                 key={option.value}
@@ -337,11 +371,13 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
                                                                 {option.label}
                                                             </SelectItem>
                                                         ))
+                                                    ) : nationalitySearch ? (
+                                                        <div className="px-2 py-6 text-center text-sm text-slate-500">
+                                                            No nationality found
+                                                        </div>
                                                     ) : (
                                                         <div className="px-2 py-6 text-center text-sm text-slate-500">
-                                                            {nationalitySearch
-                                                                ? "No nationality found"
-                                                                : "Loading..."}
+                                                            Type to search nationality
                                                         </div>
                                                     )}
                                                 </div>
@@ -369,7 +405,7 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
                                         />
                                     </Field>
                                     <Field>
-                                        <FieldLabel htmlFor="client-profile-source-of-income">
+                                        <FieldLabel htmlFor="client-profile-city">
                                             City
                                             <span className="text-red-500">
                                                 *
@@ -382,13 +418,44 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
                                                 setCity(value)
                                             }
                                         >
-                                            <SelectTrigger id="client-profile-source-of-income">
-                                                <SelectValue placeholder="City" />
+                                            <SelectTrigger id="client-profile-city">
+                                                <SelectValue placeholder="Search and select city" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="Indore">
-                                                    Indore
-                                                </SelectItem>
+                                                <div className="px-2 pb-2">
+                                                    <Input
+                                                        placeholder="Type at least 2 characters..."
+                                                        value={citySearch}
+                                                        onChange={(e) =>
+                                                            setCitySearch(e.target.value)
+                                                        }
+                                                        className="h-8 text-sm"
+                                                    />
+                                                </div>
+                                                <div className="max-h-[200px] overflow-y-auto">
+                                                    {cityLoading ? (
+                                                        <div className="px-2 py-6 text-center text-sm text-slate-500">
+                                                            Searching...
+                                                        </div>
+                                                    ) : cityOptions.length > 0 ? (
+                                                        cityOptions.map((cityName, index) => (
+                                                            <SelectItem
+                                                                key={`${cityName}-${index}`}
+                                                                value={cityName}
+                                                            >
+                                                                {cityName}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : citySearch.length >= 2 ? (
+                                                        <div className="px-2 py-6 text-center text-sm text-slate-500">
+                                                            No cities found
+                                                        </div>
+                                                    ) : (
+                                                        <div className="px-2 py-6 text-center text-sm text-slate-500">
+                                                            Type to search cities
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </SelectContent>
                                         </Select>
                                     </Field>
