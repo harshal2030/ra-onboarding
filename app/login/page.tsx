@@ -7,10 +7,11 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { LoaderCircle, Shield, ArrowLeft } from "lucide-react";
+import { LoaderCircle, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 export default function Login() {
     const [phone, setPhone] = useState("");
@@ -89,12 +90,16 @@ export default function Login() {
     return (
         <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-slate-100 flex flex-col">
             {/* Header */}
-            <header className="w-full py-6 px-8 bg-white/80 backdrop-blur-sm border-b border-slate-200">
-                <div className="max-w-7xl mx-auto flex items-center gap-3">
-                    <Shield className="w-7 h-7 text-blue-600" />
-                    <h1 className="text-xl font-semibold text-slate-800 tracking-tight">
-                        IndoThai Securities
-                    </h1>
+            <header className="w-full py-4 px-8 bg-white/80 backdrop-blur-sm border-b border-slate-200">
+                <div className="max-w-7xl mx-auto">
+                    <Image
+                        src="/logo.png"
+                        alt="IndoThai Securities Logo"
+                        width={180}
+                        height={60}
+                        className="h-12 w-auto"
+                        priority
+                    />
                 </div>
             </header>
 

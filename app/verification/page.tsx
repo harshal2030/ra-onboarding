@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { useStepper } from "@/hooks/useStepper";
-import { LoaderCircle, LogOut, Shield } from "lucide-react";
+import { LoaderCircle, LogOut } from "lucide-react";
+import Image from "next/image";
 import { Disclaimer } from "./disclaimer";
 import { SelectUserType } from "./select-user-type";
 import { ClientBasicDetails } from "./client-basic-details";
@@ -136,15 +137,19 @@ export default function Verification() {
     return (
         <div className="h-screen bg-linear-to-br from-slate-50 via-blue-50 to-slate-100 flex flex-col overflow-hidden">
             {/* Header - Fixed */}
-            <header className="flex-none w-full py-6 px-8 bg-white/80 backdrop-blur-sm border-b border-slate-200 z-10">
+            <header className="flex-none w-full py-4 px-8 bg-white/80 backdrop-blur-sm border-b border-slate-200 z-10">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <Shield className="w-7 h-7 text-blue-600" />
-                        <div>
-                            <h1 className="text-xl font-semibold text-slate-800 tracking-tight">
-                                IndoThai Securities
-                            </h1>
-                            <p className="text-sm text-slate-600">{currentStep}</p>
+                    <div className="flex items-center gap-4">
+                        <Image
+                            src="/logo.png"
+                            alt="IndoThai Securities Logo"
+                            width={180}
+                            height={60}
+                            className="h-12 w-auto"
+                            priority
+                        />
+                        <div className="border-l border-slate-300 pl-4">
+                            <p className="text-sm font-medium text-slate-600">{currentStep}</p>
                         </div>
                     </div>
                     <Button
