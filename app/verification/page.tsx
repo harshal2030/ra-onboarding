@@ -128,7 +128,9 @@ export default function Verification() {
         return (
             <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-slate-100 flex justify-center items-center">
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
-                    <span className="text-slate-700">Try after sometime, or contact support</span>
+                    <span className="text-slate-700">
+                        Try after sometime, or contact support
+                    </span>
                 </div>
             </div>
         );
@@ -149,12 +151,14 @@ export default function Verification() {
                             priority
                         />
                         <div className="border-l border-slate-300 pl-4">
-                            <p className="text-sm font-medium text-slate-600">{currentStep}</p>
+                            <p className="text-sm font-medium text-slate-600">
+                                {currentStep}
+                            </p>
                         </div>
                     </div>
                     <Button
                         variant="outline"
-                        className="flex items-center gap-2 text-sm font-medium hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors border-slate-300"
+                        className={`${loggingOut ? "cursor-not-allowed" : "cursor-pointer"} flex items-center gap-2 text-sm font-medium hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors border-slate-300`}
                         onClick={handleLogout}
                         disabled={loggingOut}
                     >
@@ -205,7 +209,9 @@ export default function Verification() {
                                     >
                                         {i + 1}
                                     </span>
-                                    <span className={`text-xs font-medium ${i <= currentIndex ? "text-slate-800" : "text-slate-500"}`}>
+                                    <span
+                                        className={`text-xs font-medium ${i <= currentIndex ? "text-slate-800" : "text-slate-500"}`}
+                                    >
                                         {step}
                                     </span>
                                 </div>

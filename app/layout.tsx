@@ -16,28 +16,34 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
     title: "IndoThai Securities - Client Onboarding",
     description: "Secure client onboarding powered by IndoThai Securities",
-    icons: {
-        icon: [
-            {
-                rel: "icon",
-                url: "https://indothai.co.in/wp-content/uploads/2024/12/cropped-image-32x32.png",
-                sizes: "32x32",
-                type: "image/png",
-            },
-            {
-                rel: "icon",
-                url: "https://indothai.co.in/wp-content/uploads/2024/12/cropped-image-192x192.png",
-                sizes: "192x192",
-                type: "image/png",
-            },
-            {
-                rel: "apple-touch-icon",
-                url: "https://indothai.co.in/wp-content/uploads/2024/12/cropped-image-180x180.png",
-                sizes: "180x180",
-                type: "image/png",
-            },
-        ],
+    applicationName: "IndoThai Securities",
+    keywords: [
+        "IndoThai Securities",
+        "client onboarding",
+        "securities",
+        "KYC",
+        "verification",
+    ],
+    formatDetection: {
+        telephone: false,
     },
+    metadataBase: new URL("https://indothai.co.in"),
+    robots: {
+        index: false,
+        follow: false,
+    },
+    manifest: "/manifest.json",
+};
+
+export const viewport = {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "#2563eb" },
+        { media: "(prefers-color-scheme: dark)", color: "#1e40af" },
+    ],
 };
 
 export default function RootLayout({
