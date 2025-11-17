@@ -26,7 +26,7 @@ import {
     SourceOfIncome,
 } from "@/lib/generated/prisma/enums";
 import { ChevronDownIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { VerifyDialog } from "@/components/custom/verify";
 import { Step } from "@/types/steps";
 import toast from "react-hot-toast";
@@ -41,6 +41,11 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
         SourceOfIncome | undefined
     >(undefined);
     const [nationality, setNationality] = useState<string>("");
+    const [nationalitySearch, setNationalitySearch] = useState<string>("");
+    const [nationalityOptions, setNationalityOptions] = useState<
+        Array<{ label: string; value: string }>
+    >([]);
+    const [nationalityLoading, setNationalityLoading] = useState(false);
     const [politicalExposure, setPoliticalExposure] = useState<
         PoliticalExpose | undefined
     >(PoliticalExpose.NO);
@@ -54,6 +59,63 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
         MaritalStatus | undefined
     >(undefined);
     const [gender, setGender] = useState<Gender | undefined>(undefined);
+
+    // Fetch nationalities on mount
+    useEffect(() => {
+        const fetchNationalities = async () => {
+            setNationalityLoading(true);
+            try {
+                const res = await fetch("/api/nationality");
+                const data = await res.json();
+                if (data.success) {
+                    setNationalityOptions(data.data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch nationalities:", error);
+                toast.error("Failed to load nationalities");
+            } finally {
+                setNationalityLoading(false);
+            }
+        };
+
+        fetchNationalities();
+    }, []);
+
+    // Debounced search for nationalities
+    useEffect(() => {
+        if (!nationalitySearch) {
+            // Load all nationalities when search is empty
+            const fetchAll = async () => {
+                try {
+                    const res = await fetch("/api/nationality");
+                    const data = await res.json();
+                    if (data.success) {
+                        setNationalityOptions(data.data);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch nationalities:", error);
+                }
+            };
+            fetchAll();
+            return;
+        }
+
+        const timer = setTimeout(async () => {
+            try {
+                const res = await fetch(
+                    `/api/nationality?keyword=${encodeURIComponent(nationalitySearch)}`
+                );
+                const data = await res.json();
+                if (data.success) {
+                    setNationalityOptions(data.data);
+                }
+            } catch (error) {
+                console.error("Failed to search nationalities:", error);
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [nationalitySearch]);
 
     const handleVerify = async () => {
         setLoading(true);
@@ -227,7 +289,7 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
                                         </Select>
                                     </Field>
                                     <Field>
-                                        <FieldLabel htmlFor="client-profile-source-of-income">
+                                        <FieldLabel htmlFor="client-profile-nationality">
                                             Nationality
                                             <span className="text-red-500">
                                                 *
@@ -240,16 +302,49 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
                                                 setNationality(value)
                                             }
                                         >
-                                            <SelectTrigger id="client-profile-source-of-income">
-                                                <SelectValue placeholder="Nationality" />
+                                            <SelectTrigger
+                                                id="client-profile-nationality"
+                                                disabled={nationalityLoading}
+                                            >
+                                                <SelectValue
+                                                    placeholder={
+                                                        nationalityLoading
+                                                            ? "Loading..."
+                                                            : "Select nationality"
+                                                    }
+                                                />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="Indian">
-                                                    Indian
-                                                </SelectItem>
-                                                <SelectItem value="Afghan">
-                                                    Afghan
-                                                </SelectItem>
+                                                <div className="px-2 pb-2">
+                                                    <Input
+                                                        placeholder="Search nationality..."
+                                                        value={nationalitySearch}
+                                                        onChange={(e) =>
+                                                            setNationalitySearch(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="h-8 text-sm"
+                                                    />
+                                                </div>
+                                                <div className="max-h-[200px] overflow-y-auto">
+                                                    {nationalityOptions.length > 0 ? (
+                                                        nationalityOptions.map((option) => (
+                                                            <SelectItem
+                                                                key={option.value}
+                                                                value={option.label}
+                                                            >
+                                                                {option.label}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : (
+                                                        <div className="px-2 py-6 text-center text-sm text-slate-500">
+                                                            {nationalitySearch
+                                                                ? "No nationality found"
+                                                                : "Loading..."}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </SelectContent>
                                         </Select>
                                     </Field>
