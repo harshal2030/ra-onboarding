@@ -1,13 +1,4 @@
 import { VerifyDialog } from "@/components/custom/verify";
-import { Button } from "@/components/ui/button";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,16 +10,88 @@ import {
 } from "@/components/ui/select";
 import { UserType } from "@/lib/generated/prisma/enums";
 import { Step } from "@/types/steps";
-import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+
+// PAN validation patterns for different investor types
+const PAN_PATTERNS: Record<string, { pattern: RegExp; example: string }> = {
+    [UserType.INDIVIDUAL]: {
+        pattern: /^[A-Z]{3}[P][A-Z][0-9]{4}[A-Z]$/,
+        example: "ABCPD1234E (4th character must be 'P')",
+    },
+    [UserType.HUF]: {
+        pattern: /^[A-Z]{3}[H][A-Z][0-9]{4}[A-Z]$/,
+        example: "ABCHD1234E (4th character must be 'H')",
+    },
+    [UserType.CORPORATE]: {
+        pattern: /^[A-Z]{3}[C][A-Z][0-9]{4}[A-Z]$/,
+        example: "ABCCD1234E (4th character must be 'C')",
+    },
+    [UserType.LLP]: {
+        pattern: /^[A-Z]{3}[L][A-Z][0-9]{4}[A-Z]$/,
+        example: "ABCLD1234E (4th character must be 'L')",
+    },
+    [UserType.TRUST]: {
+        pattern: /^[A-Z]{3}[T][A-Z][0-9]{4}[A-Z]$/,
+        example: "ABCTD1234E (4th character must be 'T')",
+    },
+    [UserType.PARTNERSHIP_FIRM]: {
+        pattern: /^[A-Z]{3}[F][A-Z][0-9]{4}[A-Z]$/,
+        example: "ABCFD1234E (4th character must be 'F')",
+    },
+};
 
 export const SelectUserType = ({ onComplete }: { onComplete: () => void }) => {
     const [loading, setLoading] = useState(false);
     const [userType, setUserType] = useState<string>(UserType.INDIVIDUAL);
     const [panNo, setPanNo] = useState("");
+    const [panError, setPanError] = useState<string>("");
+
+    const validatePAN = (pan: string): boolean => {
+        if (!pan) {
+            setPanError("PAN number is required");
+            return false;
+        }
+
+        if (pan.length !== 10) {
+            setPanError("PAN must be exactly 10 characters");
+            return false;
+        }
+
+        const pattern = PAN_PATTERNS[userType];
+        if (!pattern) {
+            setPanError("Invalid investor type");
+            return false;
+        }
+
+        if (!pattern.pattern.test(pan.toUpperCase())) {
+            setPanError(
+                `Invalid PAN format for ${userType}. Example: ${pattern.example}`,
+            );
+            return false;
+        }
+
+        setPanError("");
+        return true;
+    };
+
+    const handlePANChange = (value: string) => {
+        const upperValue = value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+        setPanNo(upperValue);
+
+        if (upperValue.length === 10) {
+            validatePAN(upperValue);
+        } else if (panError) {
+            setPanError("");
+        }
+    };
 
     const handleVerify = async () => {
+        // Validate PAN before submitting
+        if (!validatePAN(panNo)) {
+            toast.error("Please enter a valid PAN number");
+            return;
+        }
         setLoading(true);
         try {
             const res = await fetch("/api/user/verify", {
@@ -128,9 +191,21 @@ export const SelectUserType = ({ onComplete }: { onComplete: () => void }) => {
                                     id="select-user-type-pan-no"
                                     placeholder="Enter PAN number"
                                     required
-                                    onChange={(e) => setPanNo(e.target.value)}
-                                    className="h-12 border-slate-300 focus:border-blue-500 focus:ring-blue-500"
+                                    value={panNo}
+                                    onChange={(e) =>
+                                        handlePANChange(e.target.value)
+                                    }
+                                    maxLength={10}
+                                    className={`h-12 uppercase ${panError ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-slate-300 focus:border-blue-500 focus:ring-blue-500"}`}
                                 />
+                                {panError && (
+                                    <p className="text-xs text-red-500 mt-1">
+                                        {panError}
+                                    </p>
+                                )}
+                                <p className="text-xs text-slate-500 mt-1">
+                                    Format: {PAN_PATTERNS[userType]?.example}
+                                </p>
                             </Field>
                         </FieldGroup>
                     </form>
@@ -143,7 +218,13 @@ export const SelectUserType = ({ onComplete }: { onComplete: () => void }) => {
                         © IndoThai Securities
                     </span>
                     <VerifyDialog
-                        disabled={loading || !userType || !panNo}
+                        disabled={
+                            loading ||
+                            !userType ||
+                            !panNo ||
+                            panError !== "" ||
+                            panNo.length !== 10
+                        }
                         data={[
                             {
                                 label: "Investor Type",
