@@ -134,9 +134,9 @@ export default function Verification() {
     }
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-slate-100 flex flex-col">
-            {/* Header */}
-            <header className="w-full py-6 px-8 bg-white/80 backdrop-blur-sm border-b border-slate-200">
+        <div className="h-screen bg-linear-to-br from-slate-50 via-blue-50 to-slate-100 flex flex-col overflow-hidden">
+            {/* Header - Fixed */}
+            <header className="flex-none w-full py-6 px-8 bg-white/80 backdrop-blur-sm border-b border-slate-200 z-10">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <Shield className="w-7 h-7 text-blue-600" />
@@ -164,24 +164,26 @@ export default function Verification() {
             </header>
 
             {/* Main content */}
-            <main className="flex flex-1 h-screen overflow-hidden">
-                {/* Main Content + Bottom Bar */}
-                {currentStep === Step.DISCLAIMER && (
-                    <Disclaimer onComplete={() => nextStep()} />
-                )}
-                {currentStep === Step.SELECT_USER_TYPE && (
-                    <SelectUserType onComplete={() => nextStep()} />
-                )}
-                {currentStep === Step.CLIENT_BASIC_DETAILS && (
-                    <ClientBasicDetails onComplete={() => nextStep()} />
-                )}
-                {currentStep === Step.CLIENT_PROFILE && (
-                    <ClientProfile onComplete={() => nextStep()} />
-                )}
-                {currentStep === Step.KYC_ESIGN && <KycEsign />}
+            <main className="flex flex-1 overflow-hidden">
+                {/* Main Content Area - Scrollable */}
+                <div className="flex-1 overflow-y-auto">
+                    {currentStep === Step.DISCLAIMER && (
+                        <Disclaimer onComplete={() => nextStep()} />
+                    )}
+                    {currentStep === Step.SELECT_USER_TYPE && (
+                        <SelectUserType onComplete={() => nextStep()} />
+                    )}
+                    {currentStep === Step.CLIENT_BASIC_DETAILS && (
+                        <ClientBasicDetails onComplete={() => nextStep()} />
+                    )}
+                    {currentStep === Step.CLIENT_PROFILE && (
+                        <ClientProfile onComplete={() => nextStep()} />
+                    )}
+                    {currentStep === Step.KYC_ESIGN && <KycEsign />}
+                </div>
 
-                {/* Sidebar */}
-                <div className="w-[240px] border-l border-slate-200 flex flex-col py-6 px-5 gap-3 bg-white/80 backdrop-blur-sm shadow-sm">
+                {/* Sidebar - Fixed */}
+                <div className="flex-none w-[240px] border-l border-slate-200 flex flex-col py-6 px-5 gap-3 bg-white/80 backdrop-blur-sm shadow-sm overflow-y-auto">
                     <h3 className="text-sm font-semibold text-slate-800 mb-2 tracking-tight">
                         Progress
                     </h3>

@@ -58,13 +58,11 @@ export const ClientBasicDetails = ({
     };
 
     return (
-        <>
-            {/* Main Content + Bottom Bar */}
-            <div className="flex flex-col flex-1">
-                {/* Scrollable Content */}
-                <div className="flex-1 overflow-y-auto px-8 py-6">
-                    {/* Content Card */}
-                    <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+        <div className="h-full flex flex-col">
+            {/* Scrollable Content */}
+            <div className="flex-1 px-8 py-6">
+                {/* Content Card */}
+                <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
                         <div className="mb-6">
                             <h2 className="text-xl font-semibold text-slate-900 mb-2">
                                 Basic Details
@@ -218,12 +216,12 @@ export const ClientBasicDetails = ({
                     </div>
                 </div>
 
-                {/* Static Bottom Bar */}
-                <div className="border-t border-slate-200 p-6 bg-white/80 backdrop-blur-sm sticky bottom-0 shadow-lg">
-                    <div className="max-w-4xl mx-auto flex justify-between items-center">
-                        <span className="text-sm text-slate-500">
-                            © IndoThai Securities
-                        </span>
+            {/* Static Bottom Bar */}
+            <div className="flex-none border-t border-slate-200 p-6 bg-white/80 backdrop-blur-sm shadow-lg">
+                <div className="max-w-4xl mx-auto flex justify-between items-center">
+                    <span className="text-sm text-slate-500">
+                        © IndoThai Securities
+                    </span>
                         <VerifyDialog
                             disabled={
                                 !firstName ||
@@ -255,9 +253,8 @@ export const ClientBasicDetails = ({
                             loading={loading}
                             title="Verify Your Details"
                         />
-                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
