@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useStepper } from "@/hooks/useStepper";
-import { LoaderCircle, LogOut } from "lucide-react";
+import { LoaderCircle, LogOut, Shield } from "lucide-react";
 import { Disclaimer } from "./disclaimer";
 import { SelectUserType } from "./select-user-type";
 import { ClientBasicDetails } from "./client-basic-details";
@@ -117,40 +117,50 @@ export default function Verification() {
 
     if (loading && !user) {
         return (
-            <div className="h-screen flex justify-center items-center bg-gray-50">
-                <LoaderCircle className="animate-spin" />
+            <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-slate-100 flex justify-center items-center">
+                <LoaderCircle className="w-8 h-8 animate-spin text-blue-600" />
             </div>
         );
     }
 
     if (!user) {
         return (
-            <div className="h-screen flex justify-center items-center bg-gray-50">
-                <span>Try after sometime, or contact support</span>
+            <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-slate-100 flex justify-center items-center">
+                <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+                    <span className="text-slate-700">Try after sometime, or contact support</span>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="h-screen flex flex-col bg-gray-50">
+        <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-slate-100 flex flex-col">
             {/* Header */}
-            <header className="h-[60px] border-b bg-white shadow-sm flex items-center justify-between px-6">
-                <h1 className="text-lg font-semibold text-gray-800 tracking-wide">
-                    {currentStep}
-                </h1>
-                <Button
-                    variant="outline"
-                    className="flex items-center gap-2 text-sm font-medium hover:bg-red-50 hover:text-red-600 transition-colors"
-                    onClick={handleLogout}
-                    disabled={loggingOut}
-                >
-                    {loggingOut ? (
-                        <LoaderCircle size={18} className="animate-spin" />
-                    ) : (
-                        <LogOut size={18} />
-                    )}
-                    <span>{loggingOut ? "Logging out..." : "Logout"}</span>
-                </Button>
+            <header className="w-full py-6 px-8 bg-white/80 backdrop-blur-sm border-b border-slate-200">
+                <div className="max-w-7xl mx-auto flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <Shield className="w-7 h-7 text-blue-600" />
+                        <div>
+                            <h1 className="text-xl font-semibold text-slate-800 tracking-tight">
+                                IndoThai Securities
+                            </h1>
+                            <p className="text-sm text-slate-600">{currentStep}</p>
+                        </div>
+                    </div>
+                    <Button
+                        variant="outline"
+                        className="flex items-center gap-2 text-sm font-medium hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors border-slate-300"
+                        onClick={handleLogout}
+                        disabled={loggingOut}
+                    >
+                        {loggingOut ? (
+                            <LoaderCircle size={18} className="animate-spin" />
+                        ) : (
+                            <LogOut size={18} />
+                        )}
+                        <span>{loggingOut ? "Logging out..." : "Logout"}</span>
+                    </Button>
+                </div>
             </header>
 
             {/* Main content */}
@@ -171,31 +181,31 @@ export default function Verification() {
                 {currentStep === Step.KYC_ESIGN && <KycEsign />}
 
                 {/* Sidebar */}
-                <div className="w-[220px] border-l flex flex-col py-5 px-4 gap-2 bg-gray-50 shadow-inner">
-                    <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                        Steps
+                <div className="w-[240px] border-l border-slate-200 flex flex-col py-6 px-5 gap-3 bg-white/80 backdrop-blur-sm shadow-sm">
+                    <h3 className="text-sm font-semibold text-slate-800 mb-2 tracking-tight">
+                        Progress
                     </h3>
 
                     {steps.map((step, i) => {
                         return (
                             <div
                                 key={i}
-                                className={`group relative flex flex-row items-center justify-between px-3 py-2 rounded-lg border border-gray-200 ${i < currentIndex ? "bg-green-50 border-green-300" : "bg-white border-gray-200"} transition-all duration-200`}
+                                className={`group relative flex flex-row items-center justify-between px-3 py-2.5 rounded-lg border ${i < currentIndex ? "bg-blue-50 border-blue-200" : i === currentIndex ? "bg-blue-100 border-blue-300" : "bg-white border-slate-200"} transition-all duration-200 shadow-sm`}
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2.5">
                                     <span
-                                        className={`w-5 h-5 flex items-center justify-center text-[11px] font-medium ${i <= currentIndex ? "bg-green-200 text-green-700" : "bg-gray-200 text-gray-700"} rounded-full`}
+                                        className={`w-6 h-6 flex items-center justify-center text-xs font-semibold ${i < currentIndex ? "bg-blue-600 text-white" : i === currentIndex ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-600"} rounded-full`}
                                     >
                                         {i + 1}
                                     </span>
-                                    <span className="text-xs text-gray-700">
+                                    <span className={`text-xs font-medium ${i <= currentIndex ? "text-slate-800" : "text-slate-500"}`}>
                                         {step}
                                     </span>
                                 </div>
 
                                 <button
                                     onClick={() => editPreviousStep(i)}
-                                    className={`hidden cursor-pointer ${i < currentIndex ? "group-hover:block" : ""} absolute right-2 text-[10px] bg-green-500 text-white px-2 py-0.5 rounded-md transition-opacity duration-200`}
+                                    className={`hidden cursor-pointer ${i < currentIndex ? "group-hover:block" : ""} absolute right-2 text-[10px] bg-blue-600 hover:bg-blue-700 text-white px-2 py-0.5 rounded-md transition-all duration-200 shadow-sm`}
                                 >
                                     Edit
                                 </button>

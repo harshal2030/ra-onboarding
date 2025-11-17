@@ -102,8 +102,17 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
             {/* Main Content + Bottom Bar */}
             <div className="flex flex-col flex-1">
                 {/* Scrollable Content */}
-                <div className="flex-1 overflow-y-auto p-4">
-                    <Card className="p-6">
+                <div className="flex-1 overflow-y-auto px-8 py-6">
+                    {/* Content Card */}
+                    <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-slate-900 mb-2">
+                                Client Profile
+                            </h2>
+                            <p className="text-sm text-slate-600">
+                                Please provide your detailed profile information
+                            </p>
+                        </div>
                         <form className="space-y-6">
                             {/* dob - nameOfFather */}
                             <div className="space-y-2">
@@ -353,7 +362,7 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
                                         <Input
                                             value={countryOfTax}
                                             disabled
-                                            className="bg-gray-300"
+                                            className="bg-slate-300"
                                         />
                                     </Field>
                                 </FieldGroup>
@@ -500,13 +509,13 @@ export const ClientProfile = ({ onComplete }: { onComplete: () => void }) => {
                                 </FieldGroup>
                             </div>
                         </form>
-                    </Card>
+                    </div>
                 </div>
                 {/* Static Bottom Bar */}
-                <div className="border-t p-4 bg-white sticky bottom-0">
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-500">
-                            © IndoThai
+                <div className="border-t border-slate-200 p-6 bg-white/80 backdrop-blur-sm sticky bottom-0 shadow-lg">
+                    <div className="max-w-4xl mx-auto flex justify-between items-center">
+                        <span className="text-sm text-slate-500">
+                            © IndoThai Securities
                         </span>
                         <VerifyDialog
                             disabled={

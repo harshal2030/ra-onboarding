@@ -62,99 +62,119 @@ export const ClientBasicDetails = ({
             {/* Main Content + Bottom Bar */}
             <div className="flex flex-col flex-1">
                 {/* Scrollable Content */}
-                <div className="flex-1 overflow-y-auto p-4">
-                    <Card className="p-6">
-                        <form className="space-y-6">
+                <div className="flex-1 overflow-y-auto px-8 py-6">
+                    {/* Content Card */}
+                    <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-slate-900 mb-2">
+                                Basic Details
+                            </h2>
+                            <p className="text-sm text-slate-600">
+                                Please provide your personal information
+                            </p>
+                        </div>
+                        <form className="space-y-8">
                             {/* Full Name */}
-                            <div className="space-y-2">
+                            <div className="space-y-4">
+                                <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">
+                                    Personal Information
+                                </h3>
                                 <FieldGroup className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <Field>
-                                        <FieldLabel htmlFor="first-name">
+                                        <FieldLabel htmlFor="first-name" className="text-sm font-medium text-slate-700">
                                             First Name
-                                            <span className="text-red-500">
+                                            <span className="text-red-500 ml-1">
                                                 *
                                             </span>
                                         </FieldLabel>
                                         <Input
                                             id="first-name"
                                             value={firstName}
+                                            placeholder="Enter first name"
                                             required
                                             onChange={(e) =>
                                                 setFirstName(e.target.value)
                                             }
+                                            className="h-12 border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                                         />
                                     </Field>
 
                                     <Field>
-                                        <FieldLabel htmlFor="middle-name">
+                                        <FieldLabel htmlFor="middle-name" className="text-sm font-medium text-slate-700">
                                             Middle Name
                                         </FieldLabel>
                                         <Input
                                             id="middle-name"
                                             value={middleName}
+                                            placeholder="Enter middle name"
                                             onChange={(e) =>
                                                 setMiddleName(e.target.value)
                                             }
+                                            className="h-12 border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                                         />
                                     </Field>
 
                                     <Field>
-                                        <FieldLabel htmlFor="last-name">
+                                        <FieldLabel htmlFor="last-name" className="text-sm font-medium text-slate-700">
                                             Last Name{" "}
-                                            <span className="text-red-500">
+                                            <span className="text-red-500 ml-1">
                                                 *
                                             </span>
                                         </FieldLabel>
                                         <Input
                                             id="last-name"
                                             value={lastName}
+                                            placeholder="Enter last name"
                                             required
                                             onChange={(e) =>
                                                 setLastName(e.target.value)
                                             }
+                                            className="h-12 border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                                         />
                                     </Field>
                                 </FieldGroup>
                             </div>
 
                             {/* Email */}
-                            <div className="space-y-2">
-                                <h3 className="text-sm font-semibold text-gray-700">
-                                    Contact
+                            <div className="space-y-4">
+                                <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">
+                                    Contact Information
                                 </h3>
 
                                 <FieldGroup className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <Field>
-                                        <FieldLabel htmlFor="email">
+                                        <FieldLabel htmlFor="email" className="text-sm font-medium text-slate-700">
                                             Email{" "}
-                                            <span className="text-red-500">
+                                            <span className="text-red-500 ml-1">
                                                 *
                                             </span>
                                         </FieldLabel>
                                         <Input
                                             id="email"
                                             value={email}
+                                            placeholder="Enter email address"
                                             required
                                             type="email"
                                             onChange={(e) =>
                                                 setEmail(e.target.value)
                                             }
+                                            className="h-12 border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                                         />
                                     </Field>
                                 </FieldGroup>
                             </div>
 
                             {/* Passwords */}
-                            <div className="space-y-2">
-                                <h3 className="text-sm font-semibold text-gray-700">
+                            <div className="space-y-4">
+                                <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">
                                     Security
                                 </h3>
 
                                 <FieldGroup className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <Field>
-                                        <FieldLabel htmlFor="password">
+                                        <FieldLabel htmlFor="password" className="text-sm font-medium text-slate-700">
                                             Password{" "}
-                                            <span className="text-red-500">
+                                            <span className="text-red-500 ml-1">
                                                 *
                                             </span>
                                         </FieldLabel>
@@ -162,17 +182,19 @@ export const ClientBasicDetails = ({
                                             id="password"
                                             type="password"
                                             value={password}
+                                            placeholder="Enter password"
                                             required
                                             onChange={(e) =>
                                                 setPassword(e.target.value)
                                             }
+                                            className="h-12 border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                                         />
                                     </Field>
 
                                     <Field>
-                                        <FieldLabel htmlFor="confirm-password">
+                                        <FieldLabel htmlFor="confirm-password" className="text-sm font-medium text-slate-700">
                                             Confirm Password{" "}
-                                            <span className="text-red-500">
+                                            <span className="text-red-500 ml-1">
                                                 *
                                             </span>
                                         </FieldLabel>
@@ -180,25 +202,27 @@ export const ClientBasicDetails = ({
                                             id="confirm-password"
                                             type="password"
                                             value={confirmPassword}
+                                            placeholder="Confirm password"
                                             required
                                             onChange={(e) =>
                                                 setConfirmPassword(
                                                     e.target.value,
                                                 )
                                             }
+                                            className="h-12 border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                                         />
                                     </Field>
                                 </FieldGroup>
                             </div>
                         </form>
-                    </Card>
+                    </div>
                 </div>
 
                 {/* Static Bottom Bar */}
-                <div className="border-t p-4 bg-white sticky bottom-0">
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-500">
-                            © IndoThai
+                <div className="border-t border-slate-200 p-6 bg-white/80 backdrop-blur-sm sticky bottom-0 shadow-lg">
+                    <div className="max-w-4xl mx-auto flex justify-between items-center">
+                        <span className="text-sm text-slate-500">
+                            © IndoThai Securities
                         </span>
                         <VerifyDialog
                             disabled={
