@@ -1,0 +1,90 @@
+import { prisma } from "@/lib/db";
+import { NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
+import Handlebars from "handlebars";
+
+export async function GET(req: Request) {
+    const user = req.headers.get("x-user");
+
+    console.log(user);
+
+    if (!user) {
+        return NextResponse.json(
+            { status: false, error: "Unauthorized" },
+            { status: 401 }
+        );
+    }
+
+    const userData = await prisma.user.findFirst({
+        where: {
+            phone: user,
+        },
+    });
+
+    if (!userData) {
+        return NextResponse.json(
+            { status: false, error: "User not found" },
+            { status: 404 }
+        );
+    }
+
+    try {
+        // Read the Handlebars template
+        const templatePath = path.join(
+            process.cwd(),
+            "templates",
+            "agreement.hbs"
+        );
+        const templateSource = fs.readFileSync(templatePath, "utf-8");
+
+        // Compile the template
+        const template = Handlebars.compile(templateSource);
+
+        // Prepare data for the template
+        const templateData = {
+            firstName: userData.firstName || "",
+            middleName: userData.middleName || "",
+            lastName: userData.lastName || "",
+            fullName: `${userData.firstName || ""} ${userData.middleName || ""} ${userData.lastName || ""}`.trim(),
+            email: userData.email || "",
+            phone: userData.phone || "",
+            panNo: userData.pan_no || "",
+            address: userData.address || "",
+            city: userData.city || "",
+            dob: userData.dateOfBirth
+                ? new Date(userData.dateOfBirth).toLocaleDateString("en-IN")
+                : "",
+            gender: userData.gender || "",
+            nationality: userData.nationality || "",
+            fatherSpouseName: userData.nameOfFatherOrSpouse || "",
+            userType: userData.type || "",
+            sourceOfIncome: userData.sourceOfIncome || "",
+            residentialStatus: userData.residentialStatus || "",
+            maritalStatus: userData.maritalStatus || "",
+            politicalExpose: userData.politicalExpose || "",
+            countryOfTax: userData.countryOfTax || "",
+        };
+
+        // Generate the HTML
+        const htmlContent = template(templateData);
+
+        return NextResponse.json({
+            status: true,
+            data: {
+                html: htmlContent,
+                userData: {
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    email: userData.email,
+                },
+            },
+        });
+    } catch (error) {
+        console.error("Error generating agreement:", error);
+        return NextResponse.json(
+            { status: false, error: "Failed to generate agreement" },
+            { status: 500 }
+        );
+    }
+}
