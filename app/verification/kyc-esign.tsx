@@ -1,17 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {  FileSignature } from "lucide-react";
 
 export const KycEsign = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
+    const [alreadySigned, setAlreadySigned] = useState(false);
+    const [signingUrl, setSigningUrl] = useState<string>("");
 
+    useEffect(() => {
+        handleSignAgreement();
+    }, []);
 
     const handleSignAgreement = async () => {
         try {
             setLoading(true);
+            setError("");
+            setAlreadySigned(false);
+            setSigningUrl("");
+
             const response = await fetch("/api/esign/initiate", {
                 method: "POST",
                 headers: {
@@ -25,8 +34,11 @@ export const KycEsign = () => {
             const result = await response.json();
 
             if (result.success && result.data?.signing_url) {
-                // Redirect to Leegality signing URL
-                window.location.href = result.data.signing_url;
+                // Store the signing URL instead of redirecting
+                setSigningUrl(result.data.signing_url);
+            } else if (result.success) {
+                // User has already signed the document
+                setAlreadySigned(true);
             } else {
                 setError(
                     result.error ||
@@ -38,6 +50,12 @@ export const KycEsign = () => {
             setError("An error occurred while initiating e-sign. Please try again.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const proceedToSigning = () => {
+        if (signingUrl) {
+            window.location.href = signingUrl;
         }
     };
 
@@ -56,16 +74,18 @@ export const KycEsign = () => {
                                 Review and sign your agreement
                             </p>
                         </div>
-                        <div className="flex gap-3">
-                            <Button
-                                onClick={handleSignAgreement}
-                                disabled={loading}
-                                className="gap-2"
-                            >
-                                <FileSignature className="h-4 w-4" />
-                                Sign Agreement
-                            </Button>
-                        </div>
+                        {!alreadySigned && !signingUrl && (
+                            <div className="flex gap-3">
+                                <Button
+                                    onClick={handleSignAgreement}
+                                    disabled={loading}
+                                    className="gap-2"
+                                >
+                                    <FileSignature className="h-4 w-4" />
+                                    Initiate E-Sign
+                                </Button>
+                            </div>
+                        )}
                     </div>
 
                     {loading && (
@@ -90,6 +110,58 @@ export const KycEsign = () => {
                                 >
                                     Retry
                                 </Button>
+                            </div>
+                        </div>
+                    )}
+
+                    {signingUrl && !alreadySigned && (
+                        <div className="min-h-[400px] flex items-center justify-center">
+                            <div className="text-center">
+                                <div className="mx-auto mb-6 h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <FileSignature className="h-10 w-10 text-blue-600" />
+                                </div>
+                                <h3 className="text-2xl font-semibold text-slate-900 mb-2">
+                                    Agreement Ready to Sign
+                                </h3>
+                                <p className="text-slate-600 mb-6">
+                                    Your e-sign agreement has been prepared and is ready for your signature.
+                                </p>
+                                <Button
+                                    onClick={proceedToSigning}
+                                    size="lg"
+                                    className="gap-2"
+                                >
+                                    <FileSignature className="h-5 w-5" />
+                                    Proceed to Complete E-Sign
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+
+                    {alreadySigned && (
+                        <div className="min-h-[400px] flex items-center justify-center">
+                            <div className="text-center">
+                                <div className="mx-auto mb-6 h-16 w-16 rounded-full bg-green-100 flex items-center justify-center">
+                                    <svg
+                                        className="h-10 w-10 text-green-600"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                </div>
+                                <h3 className="text-2xl font-semibold text-slate-900 mb-2">
+                                    Successfully Onboarded!
+                                </h3>
+                                <p className="text-slate-600 mb-4">
+                                    You have already signed the agreement and completed the onboarding process.
+                                </p>
                             </div>
                         </div>
                     )}
