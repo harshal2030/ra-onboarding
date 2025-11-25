@@ -1,60 +1,44 @@
 "use client";
 
-import { VerifyDialog } from "@/components/custom/verify";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, FileSignature } from "lucide-react";
+import {  FileSignature } from "lucide-react";
 
 export const KycEsign = () => {
-    const [agreementHtml, setAgreementHtml] = useState<string>("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
 
-    useEffect(() => {
-        fetchAgreement();
-    }, []);
 
-    const fetchAgreement = async () => {
+    const handleSignAgreement = async () => {
         try {
             setLoading(true);
-            const response = await fetch("/api/agreement");
+            const response = await fetch("/api/esign/initiate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                     current_step: 5,
+                }),
+            });
+
             const result = await response.json();
 
-            if (result.status) {
-                setAgreementHtml(result.data.html);
+            if (result.success && result.data?.signing_url) {
+                // Redirect to Leegality signing URL
+                window.location.href = result.data.signing_url;
             } else {
-                setError(result.error || "Failed to load agreement");
+                setError(
+                    result.error ||
+                        "Failed to initiate e-sign. Please try again."
+                );
             }
         } catch (err) {
-            setError("Failed to fetch agreement");
-            console.error(err);
+            console.error("Error initiating e-sign:", err);
+            setError("An error occurred while initiating e-sign. Please try again.");
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleDownloadPDF = async () => {
-        try {
-            // Create a blob from the HTML content
-            const blob = new Blob([agreementHtml], { type: "text/html" });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "agreement.html";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        } catch (err) {
-            console.error("Error downloading PDF:", err);
-            alert("Failed to download agreement");
-        }
-    };
-
-    const handleSignAgreement = () => {
-        // TODO: Implement e-sign functionality
-        console.log("Sign agreement clicked");
-        alert("E-Sign functionality to be implemented");
     };
 
     return (
@@ -74,17 +58,8 @@ export const KycEsign = () => {
                         </div>
                         <div className="flex gap-3">
                             <Button
-                                onClick={handleDownloadPDF}
-                                disabled={loading || !agreementHtml}
-                                variant="outline"
-                                className="gap-2"
-                            >
-                                <Download className="h-4 w-4" />
-                                Download
-                            </Button>
-                            <Button
                                 onClick={handleSignAgreement}
-                                disabled={loading || !agreementHtml}
+                                disabled={loading}
                                 className="gap-2"
                             >
                                 <FileSignature className="h-4 w-4" />
@@ -109,7 +84,7 @@ export const KycEsign = () => {
                             <div className="text-center text-red-600">
                                 <p>{error}</p>
                                 <Button
-                                    onClick={fetchAgreement}
+                                    onClick={handleSignAgreement}
                                     variant="outline"
                                     className="mt-4"
                                 >
@@ -117,35 +92,6 @@ export const KycEsign = () => {
                                 </Button>
                             </div>
                         </div>
-                    )}
-
-                    {!loading && !error && agreementHtml && (
-                        <>
-                            <style
-                                dangerouslySetInnerHTML={{
-                                    __html: `
-                                        .agreement-container {
-                                            min-height: 100%;
-                                            background: #f8f9fa;
-                                            padding: 20px;
-                                        }
-                                        .agreement-container .awpage {
-                                            margin: 20px auto !important;
-                                            background: white;
-                                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                                        }
-                                    `,
-                                }}
-                            />
-                            <div className="border border-slate-200 rounded-lg bg-slate-50 max-h-[calc(100vh-250px)] overflow-auto">
-                                <div
-                                    className="agreement-container"
-                                    dangerouslySetInnerHTML={{
-                                        __html: agreementHtml,
-                                    }}
-                                />
-                            </div>
-                        </>
                     )}
                 </div>
             </div>
@@ -156,12 +102,12 @@ export const KycEsign = () => {
                     <span className="text-sm text-slate-500">
                         © IndoThai Securities
                     </span>
-                    <VerifyDialog
-                        disabled={loading || !agreementHtml}
+                    {/*<VerifyDialog
+                        disabled={loading}
                         data={[
                             {
                                 label: "Agreement Status",
-                                value: agreementHtml
+                                value: true
                                     ? "Loaded"
                                     : "Not Available",
                             },
@@ -169,7 +115,7 @@ export const KycEsign = () => {
                         handleVerify={() => {}}
                         loading={loading}
                         title="Verify Your Details"
-                    />
+                    />*/}
                 </div>
             </div>
         </div>

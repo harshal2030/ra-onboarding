@@ -24,5 +24,5 @@ export async function proxy(req: Request) {
 
 // Apply middleware only to specific routes
 export const config = {
-    matcher: ["/api/user/:path*", "/api/agreement"],
+    matcher: ["/api/user/:path*", "/api/agreement", "/api/esign/initiate"],
 };

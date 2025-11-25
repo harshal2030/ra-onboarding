@@ -36,6 +36,9 @@ model User {
     residentialStatus         ResidentialStatus?
     maritalStatus             MaritalStatus?
     onboardingStatus          OnboardingStatus @default(PENDING)
+    esignDocumentId           String?
+    esignStatus               EsignStatus?
+    esignCompletedAt          DateTime?
     createdAt                 DateTime @default(now())
 }
 
@@ -81,4 +84,11 @@ enum OnboardingStatus {
     PENDING
     IN_PROGRESS
     COMPLETED
+}
+
+enum EsignStatus {
+    INITIATED
+    IN_PROGRESS
+    COMPLETED
+    FAILED
 }
