@@ -19,3 +19,9 @@ SMS_USER=""
 SMS_ENDPOINT="https://mobicomm.dove-sms.com//REST/sendsms/ "
 
 ```
+
+
+### TODO
+- Implement webhook to get the esign status and updated db
+- When user edit the previous step, delete the esign details to initiate the esign one more time.
+- Update templete, add more pages and details
