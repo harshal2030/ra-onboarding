@@ -27,8 +27,6 @@ export async function POST(req: Request) {
     const user = req.headers.get("x-user");
     const body = await req.json();
 
-    console.log(`Received body: ${JSON.stringify(body)}`);
-
     const parseResult = userESignSchema.safeParse(body);
     if (!parseResult.success) {
         console.log(parseResult.error);

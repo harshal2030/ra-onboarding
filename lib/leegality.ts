@@ -163,8 +163,6 @@ export class LeegalityService {
 
             const data = await response.json();
 
-            console.log(data.data.requests);
-
             if (!response.ok) {
                 return {
                     success: false,
