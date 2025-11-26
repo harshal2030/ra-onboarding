@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { User } from "@/lib/generated/prisma/client";
+import { OnboardingStatus, User } from "@/lib/generated/prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -57,7 +57,13 @@ export async function POST(req: Request) {
     if (firstName) update.firstName = firstName;
     if (lastName) update.lastName = lastName;
     if (type) update.type = type;
-    if (currentStep) update.currentStep = currentStep;
+    if (currentStep) {
+        update.currentStep = currentStep;
+        update.esignStatus = null;
+        update.esignDocumentId = null;
+        update.esignCompletedAt = null;
+        update.onboardingStatus = OnboardingStatus.IN_PROGRESS;
+    }
 
     const updatedUser = await prisma.user.update({
         where: {
