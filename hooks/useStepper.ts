@@ -18,7 +18,7 @@ export function useStepper<T extends string | number>(steps: readonly T[]) {
     const goToStep = useCallback(
         (index: number) => {
             if (index >= 0 && index < totalSteps) setCurrentIndex(index);
-            else if (index === totalSteps) setCurrentIndex(totalSteps - 1);
+            else if (index >= totalSteps) setCurrentIndex(totalSteps - 1);
             else setCurrentIndex(0);
         },
         [totalSteps],

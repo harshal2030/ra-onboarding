@@ -9,7 +9,7 @@ interface LeegalityEsignRequest {
             id: string;
             name: string;
             type: string;
-            value: string;
+            value: string | number;
             required: boolean;
         }[];
         additionalFiles: string | null;
@@ -72,6 +72,9 @@ export class LeegalityService {
             phone: string;
         },
         client_name: string,
+        client_age: number,
+        client_address: string,
+        client_pronoun: string,
     ): Promise<LeegalityResponse> {
         try {
             const payload: LeegalityEsignRequest = {
@@ -88,7 +91,72 @@ export class LeegalityService {
                             required: true,
                         },
                         {
-                            id: "1764047364750",
+                            id: "1764141266755",
+                            name: "client_name",
+                            type: "text",
+                            value: client_name,
+                            required: false,
+                        },
+                        {
+                            id: "1764139161955",
+                            name: "client_name",
+                            type: "text",
+                            value: client_name,
+                            required: false,
+                        },
+                        {
+                            id: "1764148582041",
+                            name: "current_day",
+                            type: "number",
+                            value: new Date().getDate(),
+                            required: false,
+                        },
+                        {
+                            id: "1764148601651",
+                            name: "current_month",
+                            type: "text",
+                            value: new Date().toLocaleString("default", {
+                                month: "long",
+                            }),
+                            required: false,
+                        },
+                        {
+                            id: "1764148614464",
+                            name: "current_year",
+                            type: "number",
+                            value: new Date().getFullYear(),
+                            required: false,
+                        },
+                        {
+                            id: "1764148666410",
+                            name: "client_name",
+                            type: "text",
+                            value: client_name,
+                            required: false,
+                        },
+                        {
+                            id: "1764148689242",
+                            name: "client_age",
+                            type: "number",
+                            value: client_age,
+                            required: true,
+                        },
+                        {
+                            id: "1764148729629",
+                            name: "client_address",
+                            type: "text",
+                            value: client_address,
+                            required: true,
+                        },
+                        {
+                            id: "1764148774691",
+                            name: "client_pronoun",
+                            type: "text",
+                            value: client_pronoun,
+                            required: true,
+                        },
+                        {
+                            id: "1764148811680",
                             name: "client_name",
                             type: "text",
                             value: client_name,

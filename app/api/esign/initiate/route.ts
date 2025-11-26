@@ -132,6 +132,9 @@ export async function POST(req: Request) {
                 phone: userData.phone,
             },
             templateData.fullName,
+            templateData.age,
+            templateData.address,
+            templateData.pronouns,
         );
 
         if (!result.success) {
