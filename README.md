@@ -29,3 +29,6 @@ LEEGALITY_WORKFLOW_ID=""
 
 ### COMMANDS
 - `export DATABASE_URL="file:./dev.db" && npx prisma migrate dev`
+
+### Webhook Setup
+- From workflow -> Invitee Configuration -> more options -> add `Base URL`, `Redirect URL`, `Webhook`
