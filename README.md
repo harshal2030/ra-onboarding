@@ -16,12 +16,16 @@ SMS_ENTITYID=""
 SMS_TEMPID=""
 SMS_USER_PASSWORD=""
 SMS_USER=""
-SMS_ENDPOINT="https://mobicomm.dove-sms.com//REST/sendsms/ "
+SMS_ENDPOINT="https://mobicomm.dove-sms.com//REST/sendsms/"
+
+# LEEGALITY
+LEEGALITY_AUTH_TOKEN=""
+LEEGALITY_PRIVATE_SALT=""
+LEEGALITY_BASE_URL="https://sandbox.leegality.com/api/v3.0"
+LEEGALITY_WORKFLOW_ID=""
 
 ```
 
 
-### TODO
-- Implement webhook to get the esign status and updated db
-- When user edit the previous step, delete the esign details to initiate the esign one more time.
-- Update templete, add more pages and details
+### COMMANDS
+- `export DATABASE_URL="file:./dev.db" && npx prisma migrate dev`
