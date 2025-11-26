@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { leegalityService } from "@/lib/leegality";
 import { EsignStatus, Gender } from "@/lib/generated/prisma/enums";
 import { z } from "zod";
+import { checkAndUpdateEsignStatusOfTheDocument } from "../checkAndUpdate";
 
 const calculateAge = (dateOfBirth: Date | null): number => {
     if (!dateOfBirth) return 0;
@@ -71,19 +72,10 @@ export async function POST(req: Request) {
         }
 
         if (userData.esignDocumentId) {
-            const status = await leegalityService.getDocumentStatus(
+            const status = await checkAndUpdateEsignStatusOfTheDocument(
                 userData.esignDocumentId,
             );
-            if (status.data?.signed) {
-                if (userData.esignStatus !== EsignStatus.COMPLETED) {
-                    await prisma.user.update({
-                        where: { id: userData.id, phone: user },
-                        data: {
-                            esignStatus: EsignStatus.COMPLETED,
-                            currentStep: data.current_step + 1,
-                        },
-                    });
-                }
+            if (status.code === "ESIGN_SUCCESS") {
                 return NextResponse.json(
                     {
                         success: true,
@@ -91,13 +83,13 @@ export async function POST(req: Request) {
                     },
                     { status: 200 },
                 );
-            } else {
+            } else if (status.signUrl) {
                 return NextResponse.json({
                     success: true,
                     message: "E-sign already initiated",
                     data: {
-                        signing_url: status.data?.signing_url,
-                        document_id: status.data?.document_id,
+                        signing_url: status.signUrl,
+                        document_id: userData.esignDocumentId,
                     },
                 });
             }
