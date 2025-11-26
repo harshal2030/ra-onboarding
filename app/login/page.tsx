@@ -249,7 +249,7 @@ export default function Login() {
                                                 onClick={() =>
                                                     sendOtpHandler(true)
                                                 }
-                                                className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                                                className="text-sm cursor-pointer font-medium text-blue-600 hover:text-blue-700 transition-colors"
                                             >
                                                 Resend verification code
                                             </button>

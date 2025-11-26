@@ -24,7 +24,7 @@ export async function POST(req: Request) {
         if (process.env.ENV === "prod") {
             const res = await sendSMS(`+91${phone}`, message);
             const data = await res.json();
-            console.log("sendSMS API Response:", data);
+            console.log("[SMS] sendSMS API Response:", data);
             if (!res.ok) {
                 return NextResponse.json(
                     {
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
                 );
             }
         } else {
-            console.log(`${phone}: ${message}`);
+            console.log(`[SMS] ${phone}: ${message}`);
         }
 
         await prisma.user.upsert({

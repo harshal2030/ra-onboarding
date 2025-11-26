@@ -8,8 +8,6 @@ import { Gender } from "@/lib/generated/prisma/enums";
 export async function GET(req: Request) {
     const user = req.headers.get("x-user");
 
-    console.log(user);
-
     if (!user) {
         return NextResponse.json(
             { status: false, error: "Unauthorized" },

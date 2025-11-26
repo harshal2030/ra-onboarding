@@ -9,7 +9,9 @@ export async function proxy(req: Request) {
     if (!user) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
-    console.log(user);
+
+    if (process.env.ENV != "prod") console.log(user);
+
     const requestHeaders = new Headers(req.headers);
 
     if (user.phone && typeof user.phone === "string")

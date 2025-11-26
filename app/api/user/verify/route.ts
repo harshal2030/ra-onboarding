@@ -63,7 +63,7 @@ export async function POST(req: Request) {
         const user = req.headers.get("x-user");
         const body = await req.json();
 
-        console.log(`Received body: ${JSON.stringify(body)}`);
+        if (process.env.ENV != "prod") console.log(`[/api/user/verify POST] Received body: ${JSON.stringify(body)}`);
 
         const parseResult = userVerifyStepSchema.safeParse(body);
         if (!parseResult.success) {

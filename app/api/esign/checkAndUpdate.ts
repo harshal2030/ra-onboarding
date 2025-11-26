@@ -36,8 +36,10 @@ export const checkAndUpdateEsignStatusOfTheDocument = async (
                 },
             });
         }
+
+
         console.log(
-            `E-sign completed successfully for user: ${userData.phone}`,
+            `[E-Sign] Completed successfully for user: ${userData.phone}`,
         );
 
         return {

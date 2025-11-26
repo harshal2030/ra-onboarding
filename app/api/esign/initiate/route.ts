@@ -30,7 +30,6 @@ export async function POST(req: Request) {
 
     const parseResult = userESignSchema.safeParse(body);
     if (!parseResult.success) {
-        console.log(parseResult.error);
         const errorTree = z.treeifyError(parseResult.error);
         return NextResponse.json(
             { success: false, error: errorTree },

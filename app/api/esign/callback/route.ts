@@ -10,8 +10,6 @@ export async function POST(req: Request) {
     try {
         const body = await req.json();
 
-        console.log("Received callback:", body);
-
         const parseResult = callbackSchema.safeParse(body);
         if (!parseResult.success) {
             console.error("Invalid callback payload:", parseResult.error);
