@@ -202,12 +202,12 @@ export class LeegalityService {
                     status: data.status,
                 },
             };
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error initiating Leegality e-sign:", error);
             return {
                 success: false,
                 error:
-                    error.message ||
+                    (error as Error).message ||
                     "An error occurred while initiating e-sign",
             };
         }
@@ -244,12 +244,12 @@ export class LeegalityService {
                     status: data.status,
                 },
             };
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error fetching Leegality document status:", error);
             return {
                 success: false,
                 error:
-                    error.message ||
+                    (error as Error).message ||
                     "An error occurred while fetching document status",
             };
         }

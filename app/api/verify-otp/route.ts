@@ -30,8 +30,7 @@ export async function POST(req: Request) {
         });
 
         return NextResponse.json({ success: true });
-    } catch (error: any) {
-        console.error("Error in /api/verify-otp:", error);
+    } catch (error: unknown) {
         return NextResponse.json(
             {
                 success: false,

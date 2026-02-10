@@ -8,7 +8,7 @@ export default async function VerificationLayout({
     children: React.ReactNode;
 }) {
     const token = (await cookies()).get("token")?.value;
-    const decoded = token ? verifyToken(token) : null;
+    const decoded = token ? (await verifyToken(token)) : null;
 
     if (!decoded) redirect("/login");
 

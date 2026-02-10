@@ -27,7 +27,7 @@ export const KycEsign = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                     current_step: 5,
+                    current_step: 5,
                 }),
             });
 
@@ -174,20 +174,6 @@ export const KycEsign = () => {
                     <span className="text-sm text-slate-500">
                         © IndoThai Securities
                     </span>
-                    {/*<VerifyDialog
-                        disabled={loading}
-                        data={[
-                            {
-                                label: "Agreement Status",
-                                value: true
-                                    ? "Loaded"
-                                    : "Not Available",
-                            },
-                        ]}
-                        handleVerify={() => {}}
-                        loading={loading}
-                        title="Verify Your Details"
-                    />*/}
                 </div>
             </div>
         </div>

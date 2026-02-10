@@ -37,8 +37,6 @@ export async function POST(req: Request) {
         );
     }
 
-    const data = parseResult.data;
-
     if (!user) {
         return NextResponse.json(
             { success: false, error: "Unauthorized" },
@@ -74,6 +72,7 @@ export async function POST(req: Request) {
             const status = await checkAndUpdateEsignStatusOfTheDocument(
                 userData.esignDocumentId,
             );
+
             if (status.code === "ESIGN_SUCCESS") {
                 return NextResponse.json(
                     {
@@ -165,7 +164,7 @@ export async function POST(req: Request) {
                 document_id: result.data?.document_id,
             },
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error in /api/esign/initiate:", error);
         return NextResponse.json(
             {
