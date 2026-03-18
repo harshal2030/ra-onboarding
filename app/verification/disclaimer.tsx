@@ -43,18 +43,6 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
                         Dear Investor,
                     </p>
 
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                        Clients financial risk tolerance - attitudes, values,
-                        motivations, preferences and experiences, is measured
-                        with a risk profile. The risk profile questionnaire
-                        helps in understanding the risk tolerance level as well
-                        as time horizon in investing. The questionnaire is
-                        designed to show which type of investment approach may
-                        suit you best. Each answer would be given a point. The
-                        total score would suggest the appropriate risk profiling
-                        and risk assessment and suitability of service for you.
-                    </p>
-
                     <div className="border-l-4 border-blue-600 pl-4 py-2 bg-blue-50 rounded-r-lg">
                         <p className="text-sm text-slate-700 leading-relaxed">
                             <span className="font-semibold text-slate-900">
@@ -80,28 +68,12 @@ export const Disclaimer = ({ onComplete }: { onComplete: () => void }) => {
                     <div className="border-l-4 border-blue-600 pl-4 py-2 bg-blue-50 rounded-r-lg">
                         <p className="text-sm text-slate-700 leading-relaxed">
                             <span className="font-semibold text-slate-900">
-                                Our advice:
-                            </span>{" "}
-                            There are not any right or wrong answers, please
-                            follow your instincts and answer the questions.
-                            Please answer the following questions by selecting
-                            only one response to each question.
-                        </p>
-                    </div>
-
-                    <div className="border-l-4 border-blue-600 pl-4 py-2 bg-blue-50 rounded-r-lg">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                            <span className="font-semibold text-slate-900">
                                 IMPORTANT:
                             </span>{" "}
                             Before making any investment decisions, it is
                             important to understand your attitude towards risk.
                             This helps identify an appropriate mix of
-                            investments that you are comfortable with. The
-                            Finideas Investment Advisor Private Limited Risk
-                            Profiling Tool will help you understand your ability
-                            to bear risk and identify the asset classes to match
-                            your investment needs.
+                            investments that you are comfortable with.
                         </p>
                     </div>
 

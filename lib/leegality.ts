@@ -84,84 +84,75 @@ export class LeegalityService {
                     file: "",
                     fields: [
                         {
-                            id: "1764047328467",
-                            name: "client_name",
-                            type: "text",
-                            value: client_name,
-                            required: true,
+                            "id" : "1770885933018",
+                            "name" : "Client Name",
+                            "type" : "text",
+                            "value" : client_name,
+                            "required" : false
                         },
                         {
-                            id: "1764141266755",
-                            name: "client_name",
-                            type: "text",
-                            value: client_name,
-                            required: false,
-                        },
-                        {
-                            id: "1764139161955",
-                            name: "client_name",
-                            type: "text",
-                            value: client_name,
-                            required: false,
-                        },
-                        {
-                            id: "1764148582041",
-                            name: "current_day",
-                            type: "number",
-                            value: new Date().getDate(),
-                            required: false,
-                        },
-                        {
-                            id: "1764148601651",
-                            name: "current_month",
-                            type: "text",
-                            value: new Date().toLocaleString("default", {
-                                month: "long",
-                            }),
-                            required: false,
-                        },
-                        {
-                            id: "1764148614464",
-                            name: "current_year",
-                            type: "number",
-                            value: new Date().getFullYear(),
-                            required: false,
-                        },
-                        {
-                            id: "1764148666410",
-                            name: "client_name",
-                            type: "text",
-                            value: client_name,
-                            required: false,
-                        },
-                        {
-                            id: "1764148689242",
-                            name: "client_age",
-                            type: "number",
-                            value: client_age,
-                            required: true,
-                        },
-                        {
-                            id: "1764148729629",
-                            name: "client_address",
-                            type: "text",
-                            value: client_address,
-                            required: true,
-                        },
-                        {
-                            id: "1764148774691",
-                            name: "client_pronoun",
-                            type: "text",
-                            value: client_pronoun,
-                            required: true,
-                        },
-                        {
-                            id: "1764148811680",
-                            name: "client_name",
-                            type: "text",
-                            value: client_name,
-                            required: true,
-                        },
+                            "id" : "1770885955104",
+                            "name" : "Client Name",
+                            "type" : "text",
+                            "value" : client_name,
+                            "required" : false
+                            }, {
+                            "id" : "1770886004712",
+                            "name" : "Client Name",
+                            "type" : "text",
+                            "value" : client_name,
+                            "required" : false
+                            }, {
+                            "id" : "1770886056865",
+                            "name" : "Day",
+                            "type" : "text",
+                            "value" : new Date().getDate(),
+                            "required" : false
+                            }, {
+                            "id" : "1770886072605",
+                            "name" : "Month",
+                            "type" : "text",
+                            "value" : new Date().toLocaleString("default", {
+                                    month: "long",
+                                }),
+                            "required" : false
+                            }, {
+                            "id" : "1770886086285",
+                            "name" : "Year",
+                            "type" : "text",
+                            "value" : new Date().getFullYear(),
+                            "required" : false
+                            }, {
+                            "id" : "1770886104364",
+                            "name" : "Client Name",
+                            "type" : "text",
+                            "value" : client_name,
+                            "required" : false
+                            }, {
+                            "id" : "1770886129481",
+                            "name" : "Client Age",
+                            "type" : "text",
+                            "value" : client_age,
+                            "required" : false
+                            }, {
+                            "id" : "1770886153772",
+                            "name" : "Client Address",
+                            "type" : "text",
+                            "value" : client_address,
+                            "required" : false
+                            }, {
+                            "id" : "1770886183163",
+                            "name" : "Pronoun",
+                            "type" : "text",
+                            "value" : client_pronoun,
+                            "required" : false
+                            }, {
+                            "id" : "1770886200484",
+                            "name" : "Client Name",
+                            "type" : "text",
+                            "value" : client_name,
+                            "required" : false
+                            },
                     ],
                     additionalFiles: null,
                 },
@@ -170,9 +161,105 @@ export class LeegalityService {
                         name: signerData.name,
                         email: signerData.email,
                         phone: signerData.phone,
-                    },
+                    }
                 ],
             };
+            // const payload: LeegalityEsignRequest = {
+            //     profileId: this.workflowId,
+            //     file: {
+            //         name: documentName,
+            //         file: "",
+            //         fields: [
+            //             {
+            //                 id: "1764047328467",
+            //                 name: "client_name",
+            //                 type: "text",
+            //                 value: client_name,
+            //                 required: true,
+            //             },
+            //             {
+            //                 id: "1764141266755",
+            //                 name: "client_name",
+            //                 type: "text",
+            //                 value: client_name,
+            //                 required: false,
+            //             },
+            //             {
+            //                 id: "1764139161955",
+            //                 name: "client_name",
+            //                 type: "text",
+            //                 value: client_name,
+            //                 required: false,
+            //             },
+            //             {
+            //                 id: "1764148582041",
+            //                 name: "current_day",
+            //                 type: "number",
+            //                 value: new Date().getDate(),
+            //                 required: false,
+            //             },
+            //             {
+            //                 id: "1764148601651",
+            //                 name: "current_month",
+            //                 type: "text",
+            //                 value: new Date().toLocaleString("default", {
+            //                     month: "long",
+            //                 }),
+            //                 required: false,
+            //             },
+            //             {
+            //                 id: "1764148614464",
+            //                 name: "current_year",
+            //                 type: "number",
+            //                 value: new Date().getFullYear(),
+            //                 required: false,
+            //             },
+            //             {
+            //                 id: "1764148666410",
+            //                 name: "client_name",
+            //                 type: "text",
+            //                 value: client_name,
+            //                 required: false,
+            //             },
+            //             {
+            //                 id: "1764148689242",
+            //                 name: "client_age",
+            //                 type: "number",
+            //                 value: client_age,
+            //                 required: true,
+            //             },
+            //             {
+            //                 id: "1764148729629",
+            //                 name: "client_address",
+            //                 type: "text",
+            //                 value: client_address,
+            //                 required: true,
+            //             },
+            //             {
+            //                 id: "1764148774691",
+            //                 name: "client_pronoun",
+            //                 type: "text",
+            //                 value: client_pronoun,
+            //                 required: true,
+            //             },
+            //             {
+            //                 id: "1764148811680",
+            //                 name: "client_name",
+            //                 type: "text",
+            //                 value: client_name,
+            //                 required: true,
+            //             },
+            //         ],
+            //         additionalFiles: null,
+            //     },
+            //     invitees: [
+            //         {
+            //             name: signerData.name,
+            //             email: signerData.email,
+            //             phone: signerData.phone,
+            //         },
+            //     ],
+            // };
 
             const payloadString = JSON.stringify(payload);
 
