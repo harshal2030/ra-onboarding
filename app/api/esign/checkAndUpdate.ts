@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { EsignStatus, OnboardingStatus } from "@/lib/generated/prisma/enums";
+import { EsignStatus, OnboardingStatus } from "@/lib/generated/prisma";
 import { leegalityService } from "@/lib/leegality";
 
 export const checkAndUpdateEsignStatusOfTheDocument = async (

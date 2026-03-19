@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { leegalityService } from "@/lib/leegality";
-import { EsignStatus, Gender } from "@/lib/generated/prisma/enums";
+import { EsignStatus, Gender } from "@/lib/generated/prisma";
 import { z } from "zod";
 import { checkAndUpdateEsignStatusOfTheDocument } from "../checkAndUpdate";
 

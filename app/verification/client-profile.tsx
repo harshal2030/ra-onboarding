@@ -24,7 +24,7 @@ import {
     PoliticalExpose,
     ResidentialStatus,
     SourceOfIncome,
-} from "@/lib/generated/prisma/enums";
+} from "@/lib/generated/prisma";
 import { ChevronDownIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { VerifyDialog } from "@/components/custom/verify";

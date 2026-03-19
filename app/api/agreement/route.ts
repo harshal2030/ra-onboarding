@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import Handlebars from "handlebars";
-import { Gender } from "@/lib/generated/prisma/enums";
+import { Gender } from "@/lib/generated/prisma";
 
 export async function GET(req: Request) {
     const user = req.headers.get("x-user");

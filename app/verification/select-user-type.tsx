@@ -8,7 +8,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { UserType } from "@/lib/generated/prisma/enums";
+import { UserType } from "@/lib/generated/prisma";
 import { Step } from "@/types/steps";
 import { useState } from "react";
 import toast from "react-hot-toast";

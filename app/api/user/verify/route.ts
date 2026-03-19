@@ -7,7 +7,7 @@ import {
     ResidentialStatus,
     SourceOfIncome,
     UserType,
-} from "@/lib/generated/prisma/enums";
+} from "@/lib/generated/prisma";
 import { Step } from "@/types/steps";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";

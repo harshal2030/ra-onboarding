@@ -12,7 +12,7 @@ import { KycEsign } from "./kyc-esign";
 import { Step } from "@/types/steps";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { User } from "@/lib/generated/prisma/browser";
+import { User } from "@/lib/generated/prisma";
 
 const steps: Step[] = [
     Step.DISCLAIMER,
