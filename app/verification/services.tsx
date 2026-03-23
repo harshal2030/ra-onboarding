@@ -548,40 +548,120 @@ export const Services = ({ onComplete }: { onComplete: () => void }) => {
                         disabled={
                             selectedIds.length === 0 || !isFormComplete
                         }
-                        data={[
-                            ...selectedServices.map((s) => {
-                                const sel = selections[s.id];
-                                return {
-                                    label: s.planName,
-                                    value: [
-                                        `${formatCurrency(s.annualFee)} + ${formatCurrency(gstAmount(s))} GST = ${formatCurrency(feeInclGst(s))}/year`,
-                                        sel?.startDate
-                                            ? `Start: ${formatDate(sel.startDate)}`
-                                            : "",
-                                        getEndDate(sel?.startDate, sel?.billingFrequency)
-                                            ? `End: ${formatDate(getEndDate(sel.startDate, sel.billingFrequency)!)}`
-                                            : "",
-                                        sel?.billingFrequency
-                                            ? `Billing: ${BILLING_LABELS[sel.billingFrequency]}`
-                                            : "",
-                                        sel?.advanceCollectionPeriod
-                                            ? `Advance: ${sel.advanceCollectionPeriod} month(s)`
-                                            : "",
-                                    ]
-                                        .filter(Boolean)
-                                        .join(" | "),
-                                };
-                            }),
-                            {
-                                label: "Total (incl. GST)",
-                                value: `${formatCurrency(totalFeeIncl)}/year`,
-                            },
-                        ]}
                         handleVerify={handleVerify}
                         loading={loading}
                         title="Confirm Services"
-                        description="Please confirm your selected services and their configuration"
-                    />
+                        description="Please confirm your selected services"
+                    >
+                        <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+                            {selectedServices.map((s) => {
+                                const sel = selections[s.id];
+                                const endDate = getEndDate(
+                                    sel?.startDate,
+                                    sel?.billingFrequency,
+                                );
+                                return (
+                                    <div
+                                        key={s.id}
+                                        className="rounded-lg border border-slate-200 p-3 space-y-2"
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="text-sm font-semibold text-slate-900">
+                                                {s.planName}
+                                            </h4>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                                            <span className="text-slate-500">
+                                                Annual Fee
+                                            </span>
+                                            <span className="text-slate-800 text-right">
+                                                {formatCurrency(s.annualFee)}
+                                            </span>
+
+                                            <span className="text-slate-500">
+                                                GST ({s.gstRate ?? GST_DEFAULT}
+                                                %)
+                                            </span>
+                                            <span className="text-slate-800 text-right">
+                                                {formatCurrency(gstAmount(s))}
+                                            </span>
+
+                                            <span className="text-slate-500 font-medium">
+                                                Total (incl. GST)
+                                            </span>
+                                            <span className="text-slate-900 font-semibold text-right">
+                                                {formatCurrency(feeInclGst(s))}
+                                            </span>
+
+                                            <span className="text-slate-500">
+                                                Start Date
+                                            </span>
+                                            <span className="text-slate-800 text-right">
+                                                {sel?.startDate
+                                                    ? formatDate(sel.startDate)
+                                                    : "-"}
+                                            </span>
+
+                                            <span className="text-slate-500">
+                                                End Date
+                                            </span>
+                                            <span className="text-slate-800 text-right">
+                                                {endDate
+                                                    ? formatDate(endDate)
+                                                    : "-"}
+                                            </span>
+
+                                            <span className="text-slate-500">
+                                                Billing Frequency
+                                            </span>
+                                            <span className="text-slate-800 text-right">
+                                                {sel?.billingFrequency
+                                                    ? BILLING_LABELS[
+                                                          sel.billingFrequency
+                                                      ]
+                                                    : "-"}
+                                            </span>
+
+                                            <span className="text-slate-500">
+                                                Advance Collection
+                                            </span>
+                                            <span className="text-slate-800 text-right">
+                                                {sel?.advanceCollectionPeriod
+                                                    ? `${sel.advanceCollectionPeriod} month(s)`
+                                                    : "-"}
+                                            </span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+
+                            {/* Grand Total */}
+                            <div className="rounded-lg border-2 border-blue-200 bg-blue-50 p-3">
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                                    <span className="text-blue-800">
+                                        Subtotal (excl. GST)
+                                    </span>
+                                    <span className="text-blue-900 text-right">
+                                        {formatCurrency(totalFeeExcl)}/year
+                                    </span>
+
+                                    <span className="text-blue-800">
+                                        Total GST
+                                    </span>
+                                    <span className="text-blue-900 text-right">
+                                        {formatCurrency(totalGst)}/year
+                                    </span>
+
+                                    <span className="text-blue-900 font-semibold text-sm">
+                                        Grand Total
+                                    </span>
+                                    <span className="text-blue-900 font-semibold text-sm text-right">
+                                        {formatCurrency(totalFeeIncl)}/year
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </VerifyDialog>
                 </div>
             </div>
         </div>

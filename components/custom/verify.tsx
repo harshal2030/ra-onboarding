@@ -1,4 +1,5 @@
 import { LoaderCircle } from "lucide-react";
+import { ReactNode } from "react";
 import { Button } from "../ui/button";
 import {
     Dialog,
@@ -20,12 +21,13 @@ export const VerifyDialog = ({
     cancelBtnText = "Cancel",
     mainBtnText = "Verify and Next",
     description,
+    children,
 }: {
     title: string;
     disabled: boolean;
     loading: boolean;
     handleVerify: () => void;
-    data: {
+    data?: {
         label: string;
         value: string;
     }[];
@@ -33,6 +35,7 @@ export const VerifyDialog = ({
     cancelBtnText?: string;
     mainBtnText?: string;
     description?: string;
+    children?: ReactNode;
 }) => {
     return (
         <Dialog>
@@ -54,21 +57,25 @@ export const VerifyDialog = ({
                     {description ?? (
                         <DialogDescription>{description}</DialogDescription>
                     )}
-                    <div className="space-y-4">
-                        {data.map((item, index) => (
-                            <div
-                                key={index}
-                                className="flex justify-between items-center border-b pb-2"
-                            >
-                                <h4 className="text-xs text-gray-600">
-                                    {item.label}
-                                </h4>
-                                <p className="text-xs">
-                                    {item.value ? item.value : "-"}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
+                    {children ? (
+                        children
+                    ) : (
+                        <div className="space-y-4">
+                            {data?.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="flex justify-between items-center border-b pb-2"
+                                >
+                                    <h4 className="text-xs text-gray-600">
+                                        {item.label}
+                                    </h4>
+                                    <p className="text-xs">
+                                        {item.value ? item.value : "-"}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button disabled={loading} variant="outline">
