@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import {
+    BillingFrequency,
     Gender,
     MaritalStatus,
     OnboardingStatus,
@@ -53,6 +54,23 @@ const userVerifyStepSchema = z.discriminatedUnion("step", [
             gender: z.enum(Gender),
             residential_status: z.enum(ResidentialStatus),
             marital_status: z.enum(MaritalStatus),
+            current_step: z.number(),
+        }),
+    }),
+    z.object({
+        step: z.literal(Step.SERVICES),
+        data: z.object({
+            services: z
+                .array(
+                    z.object({
+                        service_id: z.number(),
+                        start_date: z.coerce.date(),
+                        end_date: z.coerce.date(),
+                        billing_frequency: z.enum(BillingFrequency),
+                        advance_collection_period: z.number().min(1),
+                    }),
+                )
+                .min(1),
             current_step: z.number(),
         }),
     }),
@@ -163,6 +181,39 @@ export async function POST(req: Request) {
                             residentialStatus: data.data.residential_status,
                             maritalStatus: data.data.marital_status,
 
+                            currentStep: data.data.current_step + 1,
+                            onboardingStatus: OnboardingStatus.IN_PROGRESS,
+                        },
+                    });
+                }
+            case Step.SERVICES:
+                if (data.step === Step.SERVICES) {
+                    const dbUser = await prisma.user.findUnique({
+                        where: { phone: user || "" },
+                    });
+
+                    if (!dbUser) break;
+
+                    // Remove existing selections and insert new ones
+                    await prisma.userService.deleteMany({
+                        where: { userId: dbUser.id },
+                    });
+
+                    await prisma.userService.createMany({
+                        data: data.data.services.map((s) => ({
+                            userId: dbUser.id,
+                            serviceId: s.service_id,
+                            startDate: s.start_date,
+                            endDate: s.end_date,
+                            billingFrequency: s.billing_frequency,
+                            advanceCollectionPeriod:
+                                s.advance_collection_period,
+                        })),
+                    });
+
+                    await prisma.user.update({
+                        where: { phone: user || "" },
+                        data: {
                             currentStep: data.data.current_step + 1,
                             onboardingStatus: OnboardingStatus.IN_PROGRESS,
                         },

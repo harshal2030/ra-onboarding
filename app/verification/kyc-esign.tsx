@@ -27,7 +27,7 @@ export const KycEsign = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    current_step: 5,
+                    current_step: 6,
                 }),
             });
 

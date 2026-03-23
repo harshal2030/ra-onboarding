@@ -8,6 +8,7 @@ import { Disclaimer } from "./disclaimer";
 import { SelectUserType } from "./select-user-type";
 import { ClientBasicDetails } from "./client-basic-details";
 import { ClientProfile } from "./client-profile";
+import { Services } from "./services";
 import { KycEsign } from "./kyc-esign";
 import { Step } from "@/types/steps";
 import { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ const steps: Step[] = [
     Step.SELECT_USER_TYPE,
     Step.CLIENT_BASIC_DETAILS,
     Step.CLIENT_PROFILE,
+    Step.SERVICES,
     Step.KYC_ESIGN,
 ];
 
@@ -187,6 +189,9 @@ export default function Verification() {
                     )}
                     {currentStep === Step.CLIENT_PROFILE && (
                         <ClientProfile onComplete={() => nextStep()} />
+                    )}
+                    {currentStep === Step.SERVICES && (
+                        <Services onComplete={() => nextStep()} />
                     )}
                     {currentStep === Step.KYC_ESIGN && <KycEsign />}
                 </div>
